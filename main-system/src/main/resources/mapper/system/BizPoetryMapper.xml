@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.main.system.mapper.BizPoetryMapper">
+
+    <resultMap type="BizPoetry" id="BizPoetryResult">
+        <result property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="author" column="author"/>
+        <result property="dynasty" column="dynasty"/>
+        <result property="recitation" column="recitation"/>
+        <result property="video" column="video"/>
+        <result property="imgs" column="imgs"/>
+        <result property="click" column="click"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <resultMap id="BizPoetryBizPoetryCommentResult" type="BizPoetry" extends="BizPoetryResult">
+        <collection property="bizPoetryCommentList" notNullColumn="sub_id" javaType="java.util.List" resultMap="BizPoetryCommentResult"/>
+    </resultMap>
+
+    <resultMap type="BizPoetryComment" id="BizPoetryCommentResult">
+        <result property="id" column="sub_id"/>
+        <result property="content" column="sub_content"/>
+        <result property="poetryId" column="sub_poetry_id"/>
+        <result property="userId" column="sub_user_id"/>
+        <result property="favor" column="sub_favor"/>
+        <result property="createBy" column="sub_create_by"/>
+        <result property="createTime" column="sub_create_time"/>
+        <result property="updateBy" column="sub_update_by"/>
+        <result property="updateTime" column="sub_update_time"/>
+    </resultMap>
+
+    <sql id="selectBizPoetryVo">
+        select id,
+               title,
+               content,
+               author,
+               dynasty,
+               recitation,
+               video,
+               imgs,
+               click,
+               create_by,
+               create_time,
+               update_by,
+               update_time,
+               remark
+        from biz_poetry
+    </sql>
+
+    <select id="selectBizPoetryList" parameterType="BizPoetry" resultMap="BizPoetryResult">
+        <include refid="selectBizPoetryVo"/>
+        <where>
+            <if test="title != null  and title != ''">and title = #{title}</if>
+            <if test="content != null  and content != ''">and content = #{content}</if>
+            <if test="author != null  and author != ''">and author like concat('%', #{author}, '%')</if>
+            <if test="dynasty != null  and dynasty != ''">and dynasty = #{dynasty}</if>
+            <if test="remark != null  and remark != ''">and remark like concat('%', #{remark}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectBizPoetryById" parameterType="Long" resultMap="BizPoetryResult">
+        <include refid="selectBizPoetryVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectBizPoetryListByIds" resultType="com.main.system.domain.BizPoetry">
+        <include refid="selectBizPoetryVo"/>
+        where id in
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <insert id="insertBizPoetry" parameterType="BizPoetry" useGeneratedKeys="true" keyProperty="id">
+        insert into biz_poetry
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">title,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="author != null and author != ''">author,</if>
+            <if test="dynasty != null and dynasty != ''">dynasty,</if>
+            <if test="recitation != null and recitation != ''">recitation,</if>
+            <if test="video != null and video != ''">video,</if>
+            <if test="imgs != null and imgs != ''">imgs,</if>
+            <if test="click != null">click,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="author != null and author != ''">#{author},</if>
+            <if test="dynasty != null and dynasty != ''">#{dynasty},</if>
+            <if test="recitation != null and recitation != ''">#{recitation},</if>
+            <if test="video != null and video != ''">#{video},</if>
+            <if test="imgs != null and imgs != ''">#{imgs},</if>
+            <if test="click != null">#{click},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBizPoetry" parameterType="BizPoetry">
+        update biz_poetry
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="author != null and author != ''">author = #{author},</if>
+            <if test="dynasty != null and dynasty != ''">dynasty = #{dynasty},</if>
+            <if test="recitation != null and recitation != ''">recitation = #{recitation},</if>
+            <if test="video != null and video != ''">video = #{video},</if>
+            <if test="imgs != null and imgs != ''">imgs = #{imgs},</if>
+            <if test="click != null">click = #{click},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="readBizPoetry">
+        UPDATE biz_poetry
+        SET click = click + 1
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteBizPoetryById" parameterType="Long">
+        delete
+        from biz_poetry
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteBizPoetryByIds" parameterType="String">
+        delete from biz_poetry where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteBizPoetryCommentByPoetryIds" parameterType="String">
+        delete from biz_poetry_comment where poetry_id in
+        <foreach item="poetryId" collection="array" open="(" separator="," close=")">
+            #{poetryId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteBizPoetryCommentByPoetryId" parameterType="Long">
+        delete
+        from biz_poetry_comment
+        where poetry_id = #{poetryId}
+    </delete>
+
+    <insert id="batchBizPoetryComment">
+        insert into biz_poetry_comment( id, content, poetry_id, user_id, favor, create_by, create_time, update_by, update_time) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.content}, #{item.poetryId}, #{item.userId}, #{item.favor}, #{item.createBy}, #{item.createTime}, #{item.updateBy}, #{item.updateTime})
+        </foreach>
+    </insert>
+</mapper>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.main.system.mapper.BizPoetryFavoriteMapper">
+
+    <resultMap type="BizPoetryFavorite" id="BizPoetryFavoriteResult">
+        <result property="id"    column="id"    />
+        <result property="poetryId"    column="poetry_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectBizPoetryFavoriteVo">
+        select id, poetry_id, user_id, create_by, create_time from biz_poetry_favorite
+    </sql>
+
+    <select id="selectBizPoetryFavoriteList" parameterType="BizPoetryFavorite" resultMap="BizPoetryFavoriteResult">
+        <include refid="selectBizPoetryFavoriteVo"/>
+        <where>
+            <if test="poetryId != null "> and poetry_id = #{poetryId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+        </where>
+    </select>
+
+    <select id="selectBizPoetryFavoriteById" parameterType="Long" resultMap="BizPoetryFavoriteResult">
+        <include refid="selectBizPoetryFavoriteVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectBizPoetryFavoriteByPoetryIdAndUserId" resultType="com.main.system.domain.BizPoetryFavorite">
+        <include refid="selectBizPoetryFavoriteVo"/>
+        where user_id = #{userId} and poetry_id = #{poetryId}
+    </select>
+
+    <insert id="insertBizPoetryFavorite" parameterType="BizPoetryFavorite" useGeneratedKeys="true" keyProperty="id">
+        insert into biz_poetry_favorite
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="poetryId != null">poetry_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="poetryId != null">#{poetryId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBizPoetryFavorite" parameterType="BizPoetryFavorite">
+        update biz_poetry_favorite
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="poetryId != null">poetry_id = #{poetryId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBizPoetryFavoriteById" parameterType="Long">
+        delete from biz_poetry_favorite where id = #{id}
+    </delete>
+
+    <delete id="deleteBizPoetryFavoriteByIds" parameterType="String">
+        delete from biz_poetry_favorite where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
