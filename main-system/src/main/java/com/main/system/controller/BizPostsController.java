@@ -1,25 +1,19 @@
 package com.main.system.controller;
 
-import java.util.List;
-import javax.servlet.http.HttpServletResponse;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import com.main.common.annotation.Log;
 import com.main.common.core.controller.BaseController;
 import com.main.common.core.domain.AjaxResult;
+import com.main.common.core.page.TableDataInfo;
 import com.main.common.enums.BusinessType;
+import com.main.common.utils.poi.ExcelUtil;
 import com.main.system.domain.BizPosts;
 import com.main.system.service.IBizPostsService;
-import com.main.common.utils.poi.ExcelUtil;
-import com.main.common.core.page.TableDataInfo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * 帖子Controller
@@ -29,8 +23,7 @@ import com.main.common.core.page.TableDataInfo;
  */
 @RestController
 @RequestMapping("/system/posts")
-public class BizPostsController extends BaseController
-{
+public class BizPostsController extends BaseController {
     @Autowired
     private IBizPostsService bizPostsService;
 
@@ -39,8 +32,7 @@ public class BizPostsController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:posts:list')")
     @GetMapping("/list")
-    public TableDataInfo list(BizPosts bizPosts)
-    {
+    public TableDataInfo list(BizPosts bizPosts) {
         startPage();
         List<BizPosts> list = bizPostsService.selectBizPostsList(bizPosts);
         return getDataTable(list);
@@ -52,8 +44,7 @@ public class BizPostsController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:posts:export')")
     @Log(title = "帖子", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, BizPosts bizPosts)
-    {
+    public void export(HttpServletResponse response, BizPosts bizPosts) {
         List<BizPosts> list = bizPostsService.selectBizPostsList(bizPosts);
         ExcelUtil<BizPosts> util = new ExcelUtil<BizPosts>(BizPosts.class);
         util.exportExcel(response, list, "帖子数据");
@@ -64,8 +55,7 @@ public class BizPostsController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:posts:query')")
     @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") Long id)
-    {
+    public AjaxResult getInfo(@PathVariable("id") Long id) {
         return success(bizPostsService.selectBizPostsById(id));
     }
 
@@ -75,8 +65,7 @@ public class BizPostsController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:posts:add')")
     @Log(title = "帖子", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody BizPosts bizPosts)
-    {
+    public AjaxResult add(@RequestBody BizPosts bizPosts) {
         return toAjax(bizPostsService.insertBizPosts(bizPosts));
     }
 
@@ -86,9 +75,18 @@ public class BizPostsController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:posts:edit')")
     @Log(title = "帖子", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody BizPosts bizPosts)
-    {
+    public AjaxResult edit(@RequestBody BizPosts bizPosts) {
         return toAjax(bizPostsService.updateBizPosts(bizPosts));
+    }
+
+    /**
+     * 阅读帖子
+     */
+    @PreAuthorize("@ss.hasPermi('system:posts:query')")
+    @Log(title = "帖子", businessType = BusinessType.UPDATE)
+    @PutMapping("/read/{id}")
+    public AjaxResult read(@PathVariable Long id) {
+        return success(bizPostsService.readBizPosts(id));
     }
 
     /**
@@ -96,9 +94,8 @@ public class BizPostsController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:posts:remove')")
     @Log(title = "帖子", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids)
-    {
+    @DeleteMapping("/{ids}")
+    public AjaxResult remove(@PathVariable Long[] ids) {
         return toAjax(bizPostsService.deleteBizPostsByIds(ids));
     }
 }

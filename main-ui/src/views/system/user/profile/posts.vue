@@ -1,15 +1,26 @@
 <template>
   <div>
-    <el-table v-loading="loading" :data="favoriteList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="postsList" @selection-change="handleSelectionChange">
       <el-table-column align="center" type="selection" width="55"/>
-      <el-table-column align="center" label="诗词" prop="poetryId">
+      <el-table-column align="center" label="标题" prop="title">
         <template v-slot="{row}">
-          <router-link :to="`/biz/poetry-detail/index/${row.poetryId}`">
-            <el-link :underline="false" type="primary">《{{ row.poetryTitle }}》</el-link>
+          <router-link :to="`/biz/posts-detail/index/${row.id}`">
+            <el-link :underline="false" type="primary">{{ row.title }}</el-link>
           </router-link>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="收藏时间" prop="createTime" width="180">
+<!--      <el-table-column align="center" label="内容" prop="content">-->
+<!--        <template v-slot="{row}">-->
+<!--          <span v-html="row.content"></span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+      <el-table-column align="center" label="点击量" prop="click"/>
+      <el-table-column v-has-role="['admin']" align="center" label="状态" prop="status">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.biz_posts_status" :value="scope.row.status"/>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="发帖时间" prop="createTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
         </template>
@@ -17,7 +28,7 @@
       <el-table-column align="center" class-name="small-padding fixed-width" label="操作">
         <template slot-scope="scope">
           <el-button
-            v-hasPermi="['system:favorite:remove']"
+            v-hasPermi="['system:posts:remove']"
             icon="el-icon-delete"
             size="mini"
             type="text"
@@ -31,9 +42,10 @@
 </template>
 
 <script>
-import {delFavorite, listFavorite} from "@/api/system/favorite";
+import {delPosts, listPosts} from "@/api/system/posts";
 
 export default {
+  dicts: ['biz_posts_status'],
   data() {
     return {
       // 遮罩层
@@ -46,11 +58,12 @@ export default {
       multiple: true,
       // 总条数
       total: 0,
-      // 用户诗词收藏表格数据
-      favoriteList: [],
+      // 帖子表格数据
+      postsList: [],
       // 查询参数
       queryParams: {
         userId: this.$store.state.user.id,
+        delFlag: 0
       }
     }
   },
@@ -58,14 +71,14 @@ export default {
     this.getList();
   },
   methods: {
-    /** 查询用户诗词收藏列表 */
+    /** 查询帖子列表 */
     getList() {
-      this.loading = true;
-      listFavorite(this.queryParams).then(response => {
-        this.favoriteList = response.rows
+      this.loading = true
+      listPosts(this.queryParams).then(response => {
+        this.postsList = response.rows
         this.total = response.total
         this.loading = false
-      });
+      })
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
@@ -76,14 +89,14 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除用户诗词收藏编号为"' + ids + '"的数据项？').then(() => {
-        return delFavorite(ids);
+      this.$modal.confirm('是否确认删除帖子编号为"' + ids + '"的数据项？').then(() => {
+        return delPosts(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {
       })
-    },
+    }
   }
 }
 </script>

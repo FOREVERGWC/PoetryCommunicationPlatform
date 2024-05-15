@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.main.system.mapper.BizPostsMapper">
-    
+
     <resultMap type="BizPosts" id="BizPostsResult">
         <result property="id"    column="id"    />
         <result property="userId"    column="user_id"    />
@@ -24,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectBizPostsList" parameterType="BizPosts" resultMap="BizPostsResult">
         <include refid="selectBizPostsVo"/>
-        <where>  
+        <where>
             <if test="id != null "> and id = #{id}</if>
             <if test="userId != null "> and user_id = #{userId}</if>
             <if test="title != null  and title != ''"> and title like concat('%', #{title}, '%')</if>
@@ -34,12 +34,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="delFlag != null "> and del_flag = #{delFlag}</if>
         </where>
     </select>
-    
+
     <select id="selectBizPostsById" parameterType="Long" resultMap="BizPostsResult">
         <include refid="selectBizPostsVo"/>
         where id = #{id}
     </select>
-        
+
+    <select id="selectBizPostsListByIds" resultType="com.main.system.domain.BizPosts">
+        <include refid="selectBizPostsVo"/>
+        where id in
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
     <insert id="insertBizPosts" parameterType="BizPosts" useGeneratedKeys="true" keyProperty="id">
         insert into biz_posts
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -85,12 +93,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
+    <update id="readBizPosts">
+        UPDATE biz_posts
+        SET click = click + 1
+        WHERE id = #{id}
+    </update>
+
     <delete id="deleteBizPostsById" parameterType="Long">
         delete from biz_posts where id = #{id}
     </delete>
 
     <delete id="deleteBizPostsByIds" parameterType="String">
-        delete from biz_posts where id in 
+        delete from biz_posts where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

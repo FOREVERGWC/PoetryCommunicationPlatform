@@ -35,6 +35,14 @@ export function updatePosts(data) {
   })
 }
 
+// 阅读帖子
+export function readPosts(id) {
+  return request({
+    url: `/system/posts/read/${id}`,
+    method: 'put'
+  })
+}
+
 // 删除帖子
 export function delPosts(id) {
   return request({

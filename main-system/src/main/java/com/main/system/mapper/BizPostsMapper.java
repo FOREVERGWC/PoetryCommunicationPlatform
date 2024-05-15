@@ -1,61 +1,77 @@
 package com.main.system.mapper;
 
-import java.util.List;
 import com.main.system.domain.BizPosts;
+
+import java.util.List;
 
 /**
  * 帖子Mapper接口
- * 
+ *
  * @author admin
  * @date 2024-05-14
  */
-public interface BizPostsMapper 
-{
+public interface BizPostsMapper {
     /**
      * 查询帖子
-     * 
+     *
      * @param id 帖子主键
      * @return 帖子
      */
-    public BizPosts selectBizPostsById(Long id);
+    BizPosts selectBizPostsById(Long id);
 
     /**
      * 查询帖子列表
-     * 
+     *
      * @param bizPosts 帖子
      * @return 帖子集合
      */
-    public List<BizPosts> selectBizPostsList(BizPosts bizPosts);
+    List<BizPosts> selectBizPostsList(BizPosts bizPosts);
 
     /**
      * 新增帖子
-     * 
+     *
      * @param bizPosts 帖子
      * @return 结果
      */
-    public int insertBizPosts(BizPosts bizPosts);
+    int insertBizPosts(BizPosts bizPosts);
 
     /**
      * 修改帖子
-     * 
+     *
      * @param bizPosts 帖子
      * @return 结果
      */
-    public int updateBizPosts(BizPosts bizPosts);
+    int updateBizPosts(BizPosts bizPosts);
 
     /**
      * 删除帖子
-     * 
+     *
      * @param id 帖子主键
      * @return 结果
      */
-    public int deleteBizPostsById(Long id);
+    int deleteBizPostsById(Long id);
 
     /**
      * 批量删除帖子
-     * 
+     *
      * @param ids 需要删除的数据主键集合
      * @return 结果
      */
-    public int deleteBizPostsByIds(Long[] ids);
+    int deleteBizPostsByIds(Long[] ids);
+
+    /**
+     * 阅读帖子
+     *
+     * @param id 帖子ID
+     * @return 结果
+     */
+    int readBizPosts(Long id);
+
+    /**
+     * 根据帖子ID批量查询诗词
+     *
+     * @param ids 帖子ID列表
+     * @return 结果
+     */
+    List<BizPosts> selectBizPostsListByIds(List<Long> ids);
 }

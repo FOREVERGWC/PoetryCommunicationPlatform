@@ -9,7 +9,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="用户ID" prop="userId">
+      <el-form-item v-has-role="['admin']" label="用户ID" prop="userId">
         <el-input
           v-model="queryParams.userId"
           clearable
@@ -25,7 +25,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="创建者" prop="createBy">
+      <el-form-item v-has-role="['admin']" label="创建者" prop="createBy">
         <el-input
           v-model="queryParams.createBy"
           clearable
@@ -33,7 +33,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="创建时间">
+      <el-form-item v-has-role="['admin']" label="创建时间">
         <el-date-picker
           v-model="daterangeCreateTime"
           end-placeholder="结束日期"
@@ -158,15 +158,15 @@
         <el-form-item label="内容">
           <editor v-model="form.content" :min-height="192"/>
         </el-form-item>
-<!--        <el-form-item label="诗词ID" prop="poetryId">-->
-<!--          <el-input v-model="form.poetryId" placeholder="请输入诗词ID"/>-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="用户ID" prop="userId">-->
-<!--          <el-input v-model="form.userId" placeholder="请输入用户ID"/>-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="点赞量" prop="favor">-->
-<!--          <el-input v-model="form.favor" placeholder="请输入点赞量"/>-->
-<!--        </el-form-item>-->
+        <!--        <el-form-item label="诗词ID" prop="poetryId">-->
+        <!--          <el-input v-model="form.poetryId" placeholder="请输入诗词ID"/>-->
+        <!--        </el-form-item>-->
+        <!--        <el-form-item label="用户ID" prop="userId">-->
+        <!--          <el-input v-model="form.userId" placeholder="请输入用户ID"/>-->
+        <!--        </el-form-item>-->
+        <!--        <el-form-item label="点赞量" prop="favor">-->
+        <!--          <el-input v-model="form.favor" placeholder="请输入点赞量"/>-->
+        <!--        </el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>

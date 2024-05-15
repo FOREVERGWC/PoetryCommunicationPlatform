@@ -9,7 +9,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="用户ID" prop="userId">
+      <el-form-item v-has-role="['admin']" label="用户ID" prop="userId">
         <el-input
           v-model="queryParams.userId"
           clearable
@@ -85,7 +85,7 @@
           </router-link>
         </template>
       </el-table-column>
-<!--      <el-table-column align="center" label="用户ID" prop="userId"/>-->
+      <!--      <el-table-column align="center" label="用户ID" prop="userId"/>-->
       <el-table-column align="center" label="创建者" prop="createBy"/>
       <el-table-column align="center" label="创建时间" prop="createTime" width="180">
         <template slot-scope="scope">

@@ -171,8 +171,22 @@ export const dynamicRoutes = [
       {
         path: 'index/:poetryId(\\d+)',
         component: () => import('@/views/system/poetry/detail'),
-        name: 'Detail',
+        name: 'PoetryDetail',
         meta: { title: '诗词详情', activeMenu: '/biz/poetry' }
+      }
+    ]
+  },
+  {
+    path: '/biz/posts-detail',
+    component: Layout,
+    hidden: true,
+    permissions: ['system:posts:query'],
+    children: [
+      {
+        path: 'index/:postsId(\\d+)',
+        component: () => import('@/views/system/posts/detail'),
+        name: 'PostsDetail',
+        meta: { title: '帖子详情', activeMenu: '/biz/posts' }
       }
     ]
   }

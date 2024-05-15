@@ -65,8 +65,10 @@
         <favorite></favorite>
       </el-tab-pane>
       <el-tab-pane label="我的发帖" name="second">
+        <posts></posts>
       </el-tab-pane>
       <el-tab-pane label="我要发贴" name="third">
+        <add-posts></add-posts>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -77,11 +79,13 @@ import userAvatar from "./userAvatar";
 import userInfo from "./userInfo";
 import resetPwd from "./resetPwd";
 import favorite from "./favorite";
+import posts from "./posts";
+import addPosts from './addPosts'
 import {getUserProfile} from "@/api/system/user";
 
 export default {
   name: "Profile",
-  components: {userAvatar, userInfo, resetPwd, favorite},
+  components: {userAvatar, userInfo, resetPwd, favorite, posts, addPosts},
   data() {
     return {
       user: {},

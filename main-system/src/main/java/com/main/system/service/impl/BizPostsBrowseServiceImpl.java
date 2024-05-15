@@ -1,12 +1,17 @@
 package com.main.system.service.impl;
 
-import java.util.List;
 import com.main.common.utils.DateUtils;
+import com.main.system.domain.BizPosts;
+import com.main.system.domain.BizPostsBrowse;
+import com.main.system.mapper.BizPostsBrowseMapper;
+import com.main.system.mapper.BizPostsMapper;
+import com.main.system.service.IBizPostsBrowseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.main.system.mapper.BizPostsBrowseMapper;
-import com.main.system.domain.BizPostsBrowse;
-import com.main.system.service.IBizPostsBrowseService;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 帖子浏览记录Service业务层处理
@@ -15,10 +20,11 @@ import com.main.system.service.IBizPostsBrowseService;
  * @date 2024-05-14
  */
 @Service
-public class BizPostsBrowseServiceImpl implements IBizPostsBrowseService
-{
+public class BizPostsBrowseServiceImpl implements IBizPostsBrowseService {
     @Autowired
     private BizPostsBrowseMapper bizPostsBrowseMapper;
+    @Autowired
+    private BizPostsMapper bizPostsMapper;
 
     /**
      * 查询帖子浏览记录
@@ -27,8 +33,7 @@ public class BizPostsBrowseServiceImpl implements IBizPostsBrowseService
      * @return 帖子浏览记录
      */
     @Override
-    public BizPostsBrowse selectBizPostsBrowseById(Long id)
-    {
+    public BizPostsBrowse selectBizPostsBrowseById(Long id) {
         return bizPostsBrowseMapper.selectBizPostsBrowseById(id);
     }
 
@@ -39,9 +44,15 @@ public class BizPostsBrowseServiceImpl implements IBizPostsBrowseService
      * @return 帖子浏览记录
      */
     @Override
-    public List<BizPostsBrowse> selectBizPostsBrowseList(BizPostsBrowse bizPostsBrowse)
-    {
-        return bizPostsBrowseMapper.selectBizPostsBrowseList(bizPostsBrowse);
+    public List<BizPostsBrowse> selectBizPostsBrowseList(BizPostsBrowse bizPostsBrowse) {
+        List<BizPostsBrowse> bizPostsBrowses = bizPostsBrowseMapper.selectBizPostsBrowseList(bizPostsBrowse);
+        // 帖子信息
+        List<Long> postsIds = bizPostsBrowses.stream().map(BizPostsBrowse::getPostsId).collect(Collectors.toList());
+        List<BizPosts> poetryList = bizPostsMapper.selectBizPostsListByIds(postsIds);
+        Map<Long, String> titleMap = poetryList.stream().collect(Collectors.toMap(BizPosts::getId, BizPosts::getTitle));
+        return bizPostsBrowses.stream()
+                .peek(item -> item.setPostsTitle(titleMap.get(item.getPostsId())))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -51,8 +62,7 @@ public class BizPostsBrowseServiceImpl implements IBizPostsBrowseService
      * @return 结果
      */
     @Override
-    public int insertBizPostsBrowse(BizPostsBrowse bizPostsBrowse)
-    {
+    public int insertBizPostsBrowse(BizPostsBrowse bizPostsBrowse) {
         bizPostsBrowse.setCreateTime(DateUtils.getNowDate());
         return bizPostsBrowseMapper.insertBizPostsBrowse(bizPostsBrowse);
     }
@@ -64,8 +74,7 @@ public class BizPostsBrowseServiceImpl implements IBizPostsBrowseService
      * @return 结果
      */
     @Override
-    public int updateBizPostsBrowse(BizPostsBrowse bizPostsBrowse)
-    {
+    public int updateBizPostsBrowse(BizPostsBrowse bizPostsBrowse) {
         return bizPostsBrowseMapper.updateBizPostsBrowse(bizPostsBrowse);
     }
 
@@ -76,8 +85,7 @@ public class BizPostsBrowseServiceImpl implements IBizPostsBrowseService
      * @return 结果
      */
     @Override
-    public int deleteBizPostsBrowseByIds(Long[] ids)
-    {
+    public int deleteBizPostsBrowseByIds(Long[] ids) {
         return bizPostsBrowseMapper.deleteBizPostsBrowseByIds(ids);
     }
 
@@ -88,8 +96,7 @@ public class BizPostsBrowseServiceImpl implements IBizPostsBrowseService
      * @return 结果
      */
     @Override
-    public int deleteBizPostsBrowseById(Long id)
-    {
+    public int deleteBizPostsBrowseById(Long id) {
         return bizPostsBrowseMapper.deleteBizPostsBrowseById(id);
     }
 }
