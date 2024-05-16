@@ -77,7 +77,13 @@
         align="center"
         prop="noticeTitle"
         :show-overflow-tooltip="true"
-      />
+      >
+        <template v-slot="{row}">
+          <router-link :to="`/system/notice-detail/index/${row.noticeId}`">
+            <el-link :underline="false" type="primary">{{ row.noticeTitle }}</el-link>
+          </router-link>
+        </template>
+      </el-table-column>
       <el-table-column label="公告类型" align="center" prop="noticeType" width="100">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_notice_type" :value="scope.row.noticeType"/>
