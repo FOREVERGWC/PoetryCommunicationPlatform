@@ -33,7 +33,7 @@ import java.util.Set;
 @RestController
 public class SysLoginController {
     private final String appid = "wx7d4d8b591ff362ff";
-    private final String secret = "";
+    private final String secret = "5a899c50cc57a45fa155281f38a4cd67";
     @Autowired
     private SysLoginService loginService;
     @Autowired
@@ -70,8 +70,8 @@ public class SysLoginController {
             if (wechatResponse.getErrcode() != 0) {
                 throw new ServiceException(response.body());
             }
-            // TODO: 2024/5/16 若是第一次登录，则注册用户
-            ajax.put("body", response.body());
+            String token = loginService.wechatLogin(loginBody.getPhone());
+            ajax.put(Constants.TOKEN, token);
             return ajax;
         } catch (Exception e) {
             throw new ServiceException(e.getMessage());

@@ -17,6 +17,10 @@ public class WechatLoginBody {
      * 授权类型
      */
     private String grant_type;
+    /**
+     * 手机号
+     */
+    private String phone;
 
     public String getAppid() {
         return appid;
@@ -51,6 +55,15 @@ public class WechatLoginBody {
 
     public WechatLoginBody setGrant_type(String grant_type) {
         this.grant_type = grant_type;
+        return this;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public WechatLoginBody setPhone(String phone) {
+        this.phone = phone;
         return this;
     }
 }

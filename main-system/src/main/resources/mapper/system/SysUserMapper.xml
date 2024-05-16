@@ -188,6 +188,11 @@
         </foreach>
     </select>
 
+    <select id="selectUserByPhone" resultMap="SysUserResult">
+        <include refid="selectUserVo"/>
+        where u.phonenumber = #{phone}
+    </select>
+
     <insert id="insertUser" parameterType="SysUser" useGeneratedKeys="true" keyProperty="userId">
         insert into sys_user(
         <if test="userId != null and userId != 0">user_id,</if>

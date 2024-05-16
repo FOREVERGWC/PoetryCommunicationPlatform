@@ -10,6 +10,7 @@ import com.main.common.exception.ServiceException;
 import com.main.common.exception.user.*;
 import com.main.common.utils.DateUtils;
 import com.main.common.utils.MessageUtils;
+import com.main.common.utils.SecurityUtils;
 import com.main.common.utils.StringUtils;
 import com.main.common.utils.ip.IpUtils;
 import com.main.framework.manager.AsyncManager;
@@ -63,9 +64,58 @@ public class SysLoginService {
         // 登录前置校验
         loginPreCheck(username, password);
         // 用户验证
-        Authentication authentication = null;
+        Authentication authentication;
         try {
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
+            AuthenticationContextHolder.setContext(authenticationToken);
+            // 该方法会去调用UserDetailsServiceImpl.loadUserByUsername
+            authentication = authenticationManager.authenticate(authenticationToken);
+        } catch (Exception e) {
+            if (e instanceof BadCredentialsException) {
+                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.password.not.match")));
+                throw new UserPasswordNotMatchException();
+            } else {
+                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, e.getMessage()));
+                throw new ServiceException(e.getMessage());
+            }
+        } finally {
+            AuthenticationContextHolder.clearContext();
+        }
+        AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success")));
+        LoginUser loginUser = (LoginUser) authentication.getPrincipal();
+        recordLoginInfo(loginUser.getUserId());
+        // 生成token
+        return tokenService.createToken(loginUser);
+    }
+
+    /**
+     * 微信登录
+     *
+     * @param phone 手机号
+     * @return 结果
+     */
+    public String wechatLogin(String phone) {
+        // 根据手机号从数据库查询用户，查不到则注册用户，否则返回token
+        SysUser user = userService.selectUserByPhone(phone);
+        if (user == null) {
+            user = new SysUser();
+            user.setUserName(phone);
+            user.setNickName("微信用户" + phone);
+            user.setPassword(SecurityUtils.encryptPassword("123456"));
+            user.setPhonenumber(phone);
+            boolean flag = userService.registerUser(user);
+            userService.insertUserAuth(user.getUserId(), new Long[]{2L});
+            if (!flag) {
+                throw new ServiceException("注册失败！请联系系统管理人员");
+            } else {
+                AsyncManager.me().execute(AsyncFactory.recordLogininfor(phone, Constants.REGISTER, MessageUtils.message("user.register.success")));
+            }
+        }
+        // 用户验证
+        Authentication authentication;
+        String username = user.getUserName();
+        try {
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, user.getPassword());
             AuthenticationContextHolder.setContext(authenticationToken);
             // 该方法会去调用UserDetailsServiceImpl.loadUserByUsername
             authentication = authenticationManager.authenticate(authenticationToken);
