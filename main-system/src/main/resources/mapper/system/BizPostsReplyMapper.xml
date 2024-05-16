@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.main.system.mapper.BizPostsReplyMapper">
+    
+    <resultMap type="BizPostsReply" id="BizPostsReplyResult">
+        <result property="id"    column="id"    />
+        <result property="content"    column="content"    />
+        <result property="postsId"    column="posts_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="replyId"    column="reply_id"    />
+        <result property="os"    column="os"    />
+        <result property="ip"    column="ip"    />
+        <result property="location"    column="location"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectBizPostsReplyVo">
+        select id, content, posts_id, user_id, reply_id, os, ip, location, create_by, create_time, update_by, update_time from biz_posts_reply
+    </sql>
+
+    <select id="selectBizPostsReplyList" parameterType="BizPostsReply" resultMap="BizPostsReplyResult">
+        <include refid="selectBizPostsReplyVo"/>
+        <where>  
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="postsId != null "> and posts_id = #{postsId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="replyId != null "> and reply_id = #{replyId}</if>
+            <if test="os != null  and os != ''"> and os = #{os}</if>
+            <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
+            <if test="location != null  and location != ''"> and location = #{location}</if>
+        </where>
+    </select>
+    
+    <select id="selectBizPostsReplyById" parameterType="Long" resultMap="BizPostsReplyResult">
+        <include refid="selectBizPostsReplyVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBizPostsReply" parameterType="BizPostsReply">
+        insert into biz_posts_reply
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="postsId != null">posts_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="replyId != null">reply_id,</if>
+            <if test="os != null">os,</if>
+            <if test="ip != null">ip,</if>
+            <if test="location != null">location,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="postsId != null">#{postsId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="replyId != null">#{replyId},</if>
+            <if test="os != null">#{os},</if>
+            <if test="ip != null">#{ip},</if>
+            <if test="location != null">#{location},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBizPostsReply" parameterType="BizPostsReply">
+        update biz_posts_reply
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="postsId != null">posts_id = #{postsId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="replyId != null">reply_id = #{replyId},</if>
+            <if test="os != null">os = #{os},</if>
+            <if test="ip != null">ip = #{ip},</if>
+            <if test="location != null">location = #{location},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBizPostsReplyById" parameterType="Long">
+        delete from biz_posts_reply where id = #{id}
+    </delete>
+
+    <delete id="deleteBizPostsReplyByIds" parameterType="String">
+        delete from biz_posts_reply where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

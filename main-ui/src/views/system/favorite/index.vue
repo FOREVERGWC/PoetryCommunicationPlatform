@@ -95,6 +95,7 @@
       <el-table-column align="center" class-name="small-padding fixed-width" label="操作">
         <template slot-scope="scope">
           <el-button
+            v-has-role="['admin']"
             v-hasPermi="['system:favorite:edit']"
             icon="el-icon-edit"
             size="mini"
