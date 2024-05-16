@@ -1,10 +1,14 @@
 package com.main.web.controller.system;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.http.HttpResponse;
+import cn.hutool.http.HttpUtil;
 import com.main.common.constant.Constants;
 import com.main.common.core.domain.AjaxResult;
 import com.main.common.core.domain.entity.SysMenu;
 import com.main.common.core.domain.entity.SysUser;
 import com.main.common.core.domain.model.LoginBody;
+import com.main.common.exception.ServiceException;
 import com.main.common.utils.SecurityUtils;
 import com.main.framework.web.service.SysLoginService;
 import com.main.framework.web.service.SysPermissionService;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -47,6 +52,18 @@ public class SysLoginController {
         String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode(), loginBody.getUuid());
         ajax.put(Constants.TOKEN, token);
         return ajax;
+    }
+
+    @PostMapping("/login/wechat")
+    public AjaxResult wechatLogin(@RequestBody LoginBody loginBody) {
+        AjaxResult ajax = AjaxResult.success();
+        Map<String, Object> map = BeanUtil.beanToMap(loginBody);
+        try (HttpResponse response = HttpUtil.createGet("https://api.weixin.qq.com/sns/jscode2session").form(map).execute()) {
+            ajax.put("body", response.body());
+            return ajax;
+        } catch (Exception e) {
+            throw new ServiceException(e.getMessage());
+        }
     }
 
     /**
