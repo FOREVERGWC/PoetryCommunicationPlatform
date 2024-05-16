@@ -1,5 +1,6 @@
 package com.main.system.service.impl;
 
+import com.main.common.core.domain.entity.SysDictData;
 import com.main.common.utils.DateUtils;
 import com.main.common.utils.SecurityUtils;
 import com.main.common.utils.StringUtils;
@@ -8,10 +9,12 @@ import com.main.system.domain.BizPoetryComment;
 import com.main.system.mapper.BizPoetryMapper;
 import com.main.system.service.IBizPoetryCommentService;
 import com.main.system.service.IBizPoetryService;
+import com.main.system.service.ISysDictDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +32,8 @@ public class BizPoetryServiceImpl implements IBizPoetryService {
     private BizPoetryMapper bizPoetryMapper;
     @Autowired
     private IBizPoetryCommentService bizPoetryCommentService;
+    @Resource
+    private ISysDictDataService sysDictDataService;
 
     /**
      * 查询诗词
@@ -41,6 +46,10 @@ public class BizPoetryServiceImpl implements IBizPoetryService {
         BizPoetry bizPoetry = bizPoetryMapper.selectBizPoetryById(id);
         BizPoetryComment bizPoetryComment = new BizPoetryComment();
         bizPoetryComment.setPoetryId(id);
+        // 字典
+        String dictLabel = sysDictDataService.selectDictLabel("biz_poetry_dynasty", bizPoetry.getDynasty());
+        bizPoetry.setDynastyText(dictLabel);
+        // 评论
         List<BizPoetryComment> bizPoetryCommentList = bizPoetryCommentService.selectBizPoetryCommentList(bizPoetryComment);
         bizPoetry.setBizPoetryCommentList(bizPoetryCommentList);
         bizPoetry.setImgList();
@@ -59,12 +68,20 @@ public class BizPoetryServiceImpl implements IBizPoetryService {
         if (bizPoetryList.isEmpty()) {
             return new ArrayList<>();
         }
-        bizPoetryList.forEach(BizPoetry::setImgList);
+        // 字典
+        SysDictData sysDictData = new SysDictData();
+        sysDictData.setDictType("biz_poetry_dynasty");
+        List<SysDictData> dictData = sysDictDataService.selectDictDataList(sysDictData);
+        Map<String, String> dictDataMap = dictData.stream().collect(Collectors.toMap(SysDictData::getDictValue, SysDictData::getDictLabel));
         // 评论
         List<Long> ids = bizPoetryList.stream().map(BizPoetry::getId).collect(Collectors.toList());
         List<BizPoetryComment> bizPoetryCommentList = bizPoetryCommentService.selectBizPoetryCommentListByPoetryIds(ids);
         Map<Long, List<BizPoetryComment>> bizPoetryCommentMap = bizPoetryCommentList.stream().collect(Collectors.groupingBy(BizPoetryComment::getPoetryId));
-        bizPoetryList.forEach(item -> item.setBizPoetryCommentList(bizPoetryCommentMap.get(item.getId())));
+        bizPoetryList.forEach(item -> {
+            item.setImgList();
+            item.setDynastyText(dictDataMap.get(item.getDynasty()));
+            item.setBizPoetryCommentList(bizPoetryCommentMap.get(item.getId()));
+        });
         return bizPoetryList;
     }
 

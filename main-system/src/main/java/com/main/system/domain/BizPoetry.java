@@ -47,6 +47,8 @@ public class BizPoetry extends BaseEntity {
     @Excel(name = "朝代")
     private String dynasty;
 
+    private String dynastyText;
+
     /**
      * 朗诵
      */
@@ -118,6 +120,15 @@ public class BizPoetry extends BaseEntity {
 
     public void setDynasty(String dynasty) {
         this.dynasty = dynasty;
+    }
+
+    public String getDynastyText() {
+        return dynastyText;
+    }
+
+    public BizPoetry setDynastyText(String dynastyText) {
+        this.dynastyText = dynastyText;
+        return this;
     }
 
     public String getRecitation() {
