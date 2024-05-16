@@ -41,6 +41,7 @@ public class BizPoetryServiceImpl implements IBizPoetryService {
         bizPoetryComment.setPoetryId(id);
         List<BizPoetryComment> bizPoetryCommentList = bizPoetryCommentService.selectBizPoetryCommentList(bizPoetryComment);
         bizPoetry.setBizPoetryCommentList(bizPoetryCommentList);
+        bizPoetry.setImgList();
         return bizPoetry;
     }
 
@@ -52,7 +53,9 @@ public class BizPoetryServiceImpl implements IBizPoetryService {
      */
     @Override
     public List<BizPoetry> selectBizPoetryList(BizPoetry bizPoetry) {
-        return bizPoetryMapper.selectBizPoetryList(bizPoetry);
+        List<BizPoetry> bizPoetryList = bizPoetryMapper.selectBizPoetryList(bizPoetry);
+        bizPoetryList.forEach(BizPoetry::setImgList);
+        return bizPoetryList;
     }
 
     /**
