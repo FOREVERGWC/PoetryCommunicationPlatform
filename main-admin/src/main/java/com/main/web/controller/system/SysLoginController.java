@@ -9,6 +9,7 @@ import com.main.common.core.domain.entity.SysMenu;
 import com.main.common.core.domain.entity.SysUser;
 import com.main.common.core.domain.model.LoginBody;
 import com.main.common.core.domain.model.WechatLoginBody;
+import com.main.common.core.domain.model.WechatResponse;
 import com.main.common.exception.ServiceException;
 import com.main.common.utils.SecurityUtils;
 import com.main.framework.web.service.SysLoginService;
@@ -31,12 +32,12 @@ import java.util.Set;
  */
 @RestController
 public class SysLoginController {
+    private final String appid = "wx7d4d8b591ff362ff";
+    private final String secret = "";
     @Autowired
     private SysLoginService loginService;
-
     @Autowired
     private ISysMenuService menuService;
-
     @Autowired
     private SysPermissionService permissionService;
 
@@ -58,8 +59,18 @@ public class SysLoginController {
     @PostMapping("/login/wechat")
     public AjaxResult wechatLogin(@RequestBody WechatLoginBody loginBody) {
         AjaxResult ajax = AjaxResult.success();
+        loginBody.setAppid(appid);
+        loginBody.setSecret(secret);
         Map<String, Object> map = BeanUtil.beanToMap(loginBody);
         try (HttpResponse response = HttpUtil.createGet("https://api.weixin.qq.com/sns/jscode2session").form(map).execute()) {
+            if (!response.isOk()) {
+                throw new ServiceException(response.body());
+            }
+            WechatResponse wechatResponse = BeanUtil.toBean(response.body(), WechatResponse.class);
+            if (wechatResponse.getErrcode() != 0) {
+                throw new ServiceException(response.body());
+            }
+            // TODO: 2024/5/16 若是第一次登录，则注册用户
             ajax.put("body", response.body());
             return ajax;
         } catch (Exception e) {
