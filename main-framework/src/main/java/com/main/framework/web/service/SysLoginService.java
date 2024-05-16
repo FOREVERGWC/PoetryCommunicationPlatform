@@ -114,6 +114,7 @@ public class SysLoginService {
         // 用户验证
         Authentication authentication;
         String username = user.getUserName();
+        user.setPassword("123456");
         try {
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, user.getPassword());
             AuthenticationContextHolder.setContext(authenticationToken);

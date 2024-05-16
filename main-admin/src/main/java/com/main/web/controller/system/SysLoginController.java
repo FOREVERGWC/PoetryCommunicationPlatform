@@ -16,6 +16,7 @@ import com.main.framework.web.service.SysLoginService;
 import com.main.framework.web.service.SysPermissionService;
 import com.main.system.service.ISysMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -67,9 +68,6 @@ public class SysLoginController {
                 throw new ServiceException(response.body());
             }
             WechatResponse wechatResponse = BeanUtil.toBean(response.body(), WechatResponse.class);
-            if (wechatResponse.getErrcode() != 0) {
-                throw new ServiceException(response.body());
-            }
             String token = loginService.wechatLogin(loginBody.getPhone());
             ajax.put(Constants.TOKEN, token);
             return ajax;
