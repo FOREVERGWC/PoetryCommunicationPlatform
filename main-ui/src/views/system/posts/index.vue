@@ -165,7 +165,7 @@
       <el-row>
         <el-col :span="1">
           <i class="el-icon-s-opportunity"></i>
-          <el-badge :value="1" class="item" type="primary"></el-badge>
+          <el-badge :value="item.click" class="item" type="primary"></el-badge>
         </el-col>
         <el-col :span="20">
           <router-link :to="`/biz/posts-detail/index/${item.id}`">
