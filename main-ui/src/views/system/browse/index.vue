@@ -24,17 +24,17 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-      <el-col v-has-role="['admin']" :span="1.5">
-        <el-button
-          v-hasPermi="['system:browse:add']"
-          icon="el-icon-plus"
-          plain
-          size="mini"
-          type="primary"
-          @click="handleAdd"
-        >新增
-        </el-button>
-      </el-col>
+<!--      <el-col v-has-role="['admin']" :span="1.5">-->
+<!--        <el-button-->
+<!--          v-hasPermi="['system:browse:add']"-->
+<!--          icon="el-icon-plus"-->
+<!--          plain-->
+<!--          size="mini"-->
+<!--          type="primary"-->
+<!--          @click="handleAdd"-->
+<!--        >新增-->
+<!--        </el-button>-->
+<!--      </el-col>-->
       <el-col v-has-role="['admin']" :span="1.5">
         <el-button
           v-hasPermi="['system:browse:edit']"

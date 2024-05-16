@@ -51,18 +51,18 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          v-has-role="['admin']"
-          v-hasPermi="['system:comment:add']"
-          icon="el-icon-plus"
-          plain
-          size="mini"
-          type="primary"
-          @click="handleAdd"
-        >新增
-        </el-button>
-      </el-col>
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          v-has-role="['admin']"-->
+<!--          v-hasPermi="['system:comment:add']"-->
+<!--          icon="el-icon-plus"-->
+<!--          plain-->
+<!--          size="mini"-->
+<!--          type="primary"-->
+<!--          @click="handleAdd"-->
+<!--        >新增-->
+<!--        </el-button>-->
+<!--      </el-col>-->
       <el-col :span="1.5">
         <el-button
           v-has-role="['admin']"
