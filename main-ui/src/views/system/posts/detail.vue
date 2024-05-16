@@ -39,46 +39,7 @@
       <el-row>
         <el-button style="float: right" type="primary" @click="handleReply">发布</el-button>
       </el-row>
-      <div v-for="item in replyList" :key="item.id">
-        <el-row>
-          <el-col :span="1">
-            <el-avatar :src="getAvatar(item.user.avatar)" style="border: 1px solid gray"></el-avatar>
-          </el-col>
-          <el-col :span="23">
-            <span style="color: #fb7299">{{ item.user.nickName || item.user.userName }}</span>
-            <el-row>{{ item.content }}</el-row>
-            <el-row>
-              <span style="color: gray">{{ item.createTime }}</span>
-              <svg-icon icon-class="favour" style="margin-left: 20px"/>
-              0
-              <svg-icon icon-class="dis-favour" style="margin-left: 20px"/>
-              <span style="color: gray; cursor: pointer; margin-left: 20px" @click="handleReplyPerson(item)">回复</span>
-            </el-row>
-            <!-- todo 封装评论组件递归调用 -->
-            <el-row>
-              <div v-for="child in item.children" :key="child.id">
-                <el-row>
-                  <el-col :span="1">
-                    <el-avatar :src="getAvatar(child.user.avatar)" style="border: 1px solid gray"></el-avatar>
-                  </el-col>
-                  <el-col :span="23">
-                    <span style="color: #fb7299">{{ child.user.nickName || child.user.userName }}</span>
-                    <el-row>{{ child.content }}</el-row>
-                    <el-row>
-                      <span style="color: gray">{{ child.createTime }}</span>
-                      <svg-icon icon-class="favour" style="margin-left: 20px"/>
-                      0
-                      <svg-icon icon-class="dis-favour" style="margin-left: 20px"/>
-                      <span style="color: gray; cursor: pointer; margin-left: 20px" @click="handleReplyPerson(child.id)">回复</span>
-                    </el-row>
-                  </el-col>
-                </el-row>
-              </div>
-            </el-row>
-          </el-col>
-        </el-row>
-        <el-divider></el-divider>
-      </div>
+      <Reply :comments="replyList" :handle-reply-person="handleReplyPerson"></Reply>
     </el-card>
   </div>
 </template>
@@ -88,9 +49,11 @@
 import {readPosts} from "@/api/system/posts";
 import store from "@/store";
 import {addReply, listReply} from "@/api/system/reply";
+import Reply from "@/views/system/posts/components/reply";
 
 export default {
   name: 'PostsDetail',
+  components: {Reply},
   data() {
     return {
       avatar: store.getters.avatar,
@@ -128,11 +91,11 @@ export default {
         postsId: this.form.id
       }
       listReply(form).then(res => {
-        this.replyList = res.data
-        this.total = res.data.length
+        this.replyList = res.rows
+        this.total = res.title
       })
     },
-    handleReply(replyId) {
+    handleReply() {
       const form = {
         content: this.reply,
         postsId: this.form.id,

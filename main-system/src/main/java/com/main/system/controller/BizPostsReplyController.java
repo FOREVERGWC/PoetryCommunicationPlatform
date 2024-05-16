@@ -3,6 +3,7 @@ package com.main.system.controller;
 import com.main.common.annotation.Log;
 import com.main.common.core.controller.BaseController;
 import com.main.common.core.domain.AjaxResult;
+import com.main.common.core.page.TableDataInfo;
 import com.main.common.enums.BusinessType;
 import com.main.common.utils.DataUtils;
 import com.main.common.utils.poi.ExcelUtil;
@@ -32,11 +33,12 @@ public class BizPostsReplyController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('system:reply:list')")
     @GetMapping("/list")
-    public AjaxResult list(BizPostsReply bizPostsReply) {
+    public TableDataInfo list(BizPostsReply bizPostsReply) {
+        startPage();
         List<BizPostsReply> list = bizPostsReplyService.selectBizPostsReplyList(bizPostsReply);
         // 构造树
         List<BizPostsReply> tree = DataUtils.listToTree(list, BizPostsReply::getReplyId, BizPostsReply::setChildren, BizPostsReply::getId, null);
-        return success(tree);
+        return getDataTable(tree);
     }
 
     /**
