@@ -265,7 +265,9 @@ export default {
         content: null,
         click: null,
         status: this.$auth.hasRole('admin') ? '' : '0',
-        delFlag: null
+        delFlag: null,
+        orderByColumn: 'create_time',
+        isAsc: 'desc'
       },
       // 表单参数
       form: {},
