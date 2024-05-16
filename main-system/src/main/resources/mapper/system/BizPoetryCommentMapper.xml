@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.main.system.mapper.BizPoetryCommentMapper">
-    
+
     <resultMap type="BizPoetryComment" id="BizPoetryCommentResult">
         <result property="id"    column="id"    />
         <result property="content"    column="content"    />
@@ -22,7 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectBizPoetryCommentList" parameterType="BizPoetryComment" resultMap="BizPoetryCommentResult">
         <include refid="selectBizPoetryCommentVo"/>
-        <where>  
+        <where>
             <if test="content != null  and content != ''"> and content like concat('%', #{content}, '%')</if>
             <if test="poetryId != null "> and poetry_id = #{poetryId}</if>
             <if test="userId != null "> and user_id = #{userId}</if>
@@ -31,12 +31,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
         </where>
     </select>
-    
+
     <select id="selectBizPoetryCommentById" parameterType="Long" resultMap="BizPoetryCommentResult">
         <include refid="selectBizPoetryCommentVo"/>
         where id = #{id}
     </select>
-        
+
+    <select id="selectBizPoetryCommentListByPoetryIds" parameterType="List" resultMap="BizPoetryCommentResult">
+        <include refid="selectBizPoetryCommentVo"/>
+        where poetry_id in
+        <foreach collection="list" item="poetryId" open="(" separator="," close=")">
+            #{poetryId}
+        </foreach>
+    </select>
+
     <insert id="insertBizPoetryComment" parameterType="BizPoetryComment" useGeneratedKeys="true" keyProperty="id">
         insert into biz_poetry_comment
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -81,7 +89,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteBizPoetryCommentByIds" parameterType="String">
-        delete from biz_poetry_comment where id in 
+        delete from biz_poetry_comment where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

@@ -58,4 +58,12 @@ public interface IBizPoetryCommentService {
      * @return 结果
      */
     int deleteBizPoetryCommentById(Long id);
+
+    /**
+     * 根据诗词ID列表获取评论列表
+     *
+     * @param ids 诗词ID列表
+     * @return 结果
+     */
+    List<BizPoetryComment> selectBizPoetryCommentListByPoetryIds(List<Long> ids);
 }

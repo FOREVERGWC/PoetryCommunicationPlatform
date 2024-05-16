@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 诗词Service业务层处理
@@ -54,7 +56,15 @@ public class BizPoetryServiceImpl implements IBizPoetryService {
     @Override
     public List<BizPoetry> selectBizPoetryList(BizPoetry bizPoetry) {
         List<BizPoetry> bizPoetryList = bizPoetryMapper.selectBizPoetryList(bizPoetry);
+        if (bizPoetryList.isEmpty()) {
+            return new ArrayList<>();
+        }
         bizPoetryList.forEach(BizPoetry::setImgList);
+        // 评论
+        List<Long> ids = bizPoetryList.stream().map(BizPoetry::getId).collect(Collectors.toList());
+        List<BizPoetryComment> bizPoetryCommentList = bizPoetryCommentService.selectBizPoetryCommentListByPoetryIds(ids);
+        Map<Long, List<BizPoetryComment>> bizPoetryCommentMap = bizPoetryCommentList.stream().collect(Collectors.groupingBy(BizPoetryComment::getPoetryId));
+        bizPoetryList.forEach(item -> item.setBizPoetryCommentList(bizPoetryCommentMap.get(item.getId())));
         return bizPoetryList;
     }
 

@@ -128,4 +128,9 @@ public class BizPoetryCommentServiceImpl implements IBizPoetryCommentService {
     public int deleteBizPoetryCommentById(Long id) {
         return bizPoetryCommentMapper.deleteBizPoetryCommentById(id);
     }
+
+    @Override
+    public List<BizPoetryComment> selectBizPoetryCommentListByPoetryIds(List<Long> ids) {
+        return bizPoetryCommentMapper.selectBizPoetryCommentListByPoetryIds(ids);
+    }
 }
