@@ -8,6 +8,7 @@ import com.main.common.core.domain.AjaxResult;
 import com.main.common.core.domain.entity.SysMenu;
 import com.main.common.core.domain.entity.SysUser;
 import com.main.common.core.domain.model.LoginBody;
+import com.main.common.core.domain.model.WechatLoginBody;
 import com.main.common.exception.ServiceException;
 import com.main.common.utils.SecurityUtils;
 import com.main.framework.web.service.SysLoginService;
@@ -55,7 +56,7 @@ public class SysLoginController {
     }
 
     @PostMapping("/login/wechat")
-    public AjaxResult wechatLogin(@RequestBody LoginBody loginBody) {
+    public AjaxResult wechatLogin(@RequestBody WechatLoginBody loginBody) {
         AjaxResult ajax = AjaxResult.success();
         Map<String, Object> map = BeanUtil.beanToMap(loginBody);
         try (HttpResponse response = HttpUtil.createGet("https://api.weixin.qq.com/sns/jscode2session").form(map).execute()) {
