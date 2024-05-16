@@ -95,6 +95,11 @@
       <!--      <el-table-column align="center" label="视频" prop="video"/>-->
       <!--      <el-table-column align="center" label="图片" prop="imgs"/>-->
       <el-table-column align="center" label="点击量" prop="click"/>
+      <el-table-column align="center" label="评论量">
+        <template v-slot="{row}">
+          <span>{{ row.bizPoetryCommentList.length }}</span>
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="备注" prop="remark"/>
       <el-table-column align="center" class-name="small-padding fixed-width" label="操作">
         <template slot-scope="scope">

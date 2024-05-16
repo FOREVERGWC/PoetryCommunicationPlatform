@@ -80,7 +80,7 @@ public class BizPoetryServiceImpl implements IBizPoetryService {
         bizPoetryList.forEach(item -> {
             item.setImgList();
             item.setDynastyText(dictDataMap.get(item.getDynasty()));
-            item.setBizPoetryCommentList(bizPoetryCommentMap.get(item.getId()));
+            item.setBizPoetryCommentList(bizPoetryCommentMap.getOrDefault(item.getId(), new ArrayList<>()));
         });
         return bizPoetryList;
     }
