@@ -6,6 +6,8 @@ import com.main.system.domain.vo.SysUserVo;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.List;
+
 /**
  * 帖子回复对象 biz_posts_reply
  *

@@ -4,6 +4,7 @@ import com.main.common.annotation.Log;
 import com.main.common.core.controller.BaseController;
 import com.main.common.core.domain.AjaxResult;
 import com.main.common.enums.BusinessType;
+import com.main.common.utils.DataUtils;
 import com.main.common.utils.poi.ExcelUtil;
 import com.main.system.domain.BizPostsReply;
 import com.main.system.service.IBizPostsReplyService;
@@ -33,7 +34,9 @@ public class BizPostsReplyController extends BaseController {
     @GetMapping("/list")
     public AjaxResult list(BizPostsReply bizPostsReply) {
         List<BizPostsReply> list = bizPostsReplyService.selectBizPostsReplyList(bizPostsReply);
-        return success(list);
+        // 构造树
+        List<BizPostsReply> tree = DataUtils.listToTree(list, BizPostsReply::getReplyId, BizPostsReply::setChildren, BizPostsReply::getId, null);
+        return success(tree);
     }
 
     /**
