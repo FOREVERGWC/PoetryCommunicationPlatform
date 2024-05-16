@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -48,6 +49,9 @@ public class BizPoetryFavoriteServiceImpl implements IBizPoetryFavoriteService {
     @Override
     public List<BizPoetryFavorite> selectBizPoetryFavoriteList(BizPoetryFavorite bizPoetryFavorite) {
         List<BizPoetryFavorite> bizPoetryFavorites = bizPoetryFavoriteMapper.selectBizPoetryFavoriteList(bizPoetryFavorite);
+        if (bizPoetryFavorites.isEmpty()) {
+            return new ArrayList<>();
+        }
         // 诗词信息
         List<Long> poetryIds = bizPoetryFavorites.stream().map(BizPoetryFavorite::getPoetryId).collect(Collectors.toList());
         List<BizPoetry> poetryList = bizPoetryMapper.selectBizPoetryListByIds(poetryIds);

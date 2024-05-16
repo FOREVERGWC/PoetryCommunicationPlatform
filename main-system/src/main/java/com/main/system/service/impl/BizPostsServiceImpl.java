@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -56,6 +57,9 @@ public class BizPostsServiceImpl implements IBizPostsService {
     @Override
     public List<BizPosts> selectBizPostsList(BizPosts bizPosts) {
         List<BizPosts> bizPostsList = bizPostsMapper.selectBizPostsList(bizPosts);
+        if (bizPostsList.isEmpty()) {
+            return new ArrayList<>();
+        }
         // 字典
         SysDictData sysDictData = new SysDictData();
         sysDictData.setDictType("biz_posts_status");

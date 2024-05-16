@@ -9,6 +9,7 @@ import com.main.system.service.IBizPostsBrowseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -46,6 +47,9 @@ public class BizPostsBrowseServiceImpl implements IBizPostsBrowseService {
     @Override
     public List<BizPostsBrowse> selectBizPostsBrowseList(BizPostsBrowse bizPostsBrowse) {
         List<BizPostsBrowse> bizPostsBrowses = bizPostsBrowseMapper.selectBizPostsBrowseList(bizPostsBrowse);
+        if (bizPostsBrowses.isEmpty()) {
+            return new ArrayList<>();
+        }
         // 帖子信息
         List<Long> postsIds = bizPostsBrowses.stream().map(BizPostsBrowse::getPostsId).collect(Collectors.toList());
         List<BizPosts> poetryList = bizPostsMapper.selectBizPostsListByIds(postsIds);
