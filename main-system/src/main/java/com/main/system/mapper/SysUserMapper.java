@@ -132,4 +132,12 @@ public interface SysUserMapper {
      * @return 结果
      */
     List<SysUser> selectUsersByUserIds(List<Long> userIds);
+
+    /**
+     * 根据手机号查询用户
+     *
+     * @param phone 手机号
+     * @return 用户信息
+     */
+    SysUser selectUserByPhone(String phone);
 }

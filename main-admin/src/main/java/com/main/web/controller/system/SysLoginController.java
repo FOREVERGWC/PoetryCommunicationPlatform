@@ -16,6 +16,7 @@ import com.main.framework.web.service.SysLoginService;
 import com.main.framework.web.service.SysPermissionService;
 import com.main.system.service.ISysMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,7 +34,7 @@ import java.util.Set;
 @RestController
 public class SysLoginController {
     private final String appid = "wx7d4d8b591ff362ff";
-    private final String secret = "";
+    private final String secret = "5a899c50cc57a45fa155281f38a4cd67";
     @Autowired
     private SysLoginService loginService;
     @Autowired
@@ -67,11 +68,8 @@ public class SysLoginController {
                 throw new ServiceException(response.body());
             }
             WechatResponse wechatResponse = BeanUtil.toBean(response.body(), WechatResponse.class);
-            if (wechatResponse.getErrcode() != 0) {
-                throw new ServiceException(response.body());
-            }
-            // TODO: 2024/5/16 若是第一次登录，则注册用户
-            ajax.put("body", response.body());
+            String token = loginService.wechatLogin(loginBody.getPhone());
+            ajax.put(Constants.TOKEN, token);
             return ajax;
         } catch (Exception e) {
             throw new ServiceException(e.getMessage());
