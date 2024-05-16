@@ -100,7 +100,7 @@
           <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" v-if="isAdmin">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -183,6 +183,7 @@ export default {
   dicts: ['sys_notice_status', 'sys_notice_type'],
   data() {
     return {
+      isAdmin: this.$auth.hasRole('admin'),
       // 遮罩层
       loading: true,
       // 选中数组

@@ -56,16 +56,16 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['system:reply:add']"
-        >新增</el-button>
-      </el-col>
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="primary"-->
+<!--          plain-->
+<!--          icon="el-icon-plus"-->
+<!--          size="mini"-->
+<!--          @click="handleAdd"-->
+<!--          v-hasPermi="['system:reply:add']"-->
+<!--        >新增</el-button>-->
+<!--      </el-col>-->
       <el-col :span="1.5">
         <el-button
           type="info"
@@ -96,6 +96,7 @@
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
+            v-has-role="['admin']"
             size="mini"
             type="text"
             icon="el-icon-edit"
@@ -103,6 +104,7 @@
             v-hasPermi="['system:reply:edit']"
           >修改</el-button>
           <el-button
+            v-has-role="['admin']"
             size="mini"
             type="text"
             icon="el-icon-plus"
@@ -221,7 +223,8 @@ export default {
     getList() {
       this.loading = true;
       listReply(this.queryParams).then(response => {
-        this.replyList = this.handleTree(response.data, "id", "replyId");
+        this.replyList = response.rows
+        // this.replyList = this.handleTree(response.data, "id", "replyId");
         this.loading = false;
       });
     },

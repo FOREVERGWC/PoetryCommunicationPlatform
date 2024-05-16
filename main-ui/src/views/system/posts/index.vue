@@ -25,14 +25,14 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="点击量" prop="click">
-        <el-input
-          v-model="queryParams.click"
-          clearable
-          placeholder="请输入点击量"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+      <!--      <el-form-item label="点击量" prop="click">-->
+      <!--        <el-input-->
+      <!--          v-model="queryParams.click"-->
+      <!--          clearable-->
+      <!--          placeholder="请输入点击量"-->
+      <!--          @keyup.enter.native="handleQuery"-->
+      <!--        />-->
+      <!--      </el-form-item>-->
       <el-form-item v-has-role="['admin']" label="状态" prop="status">
         <el-select v-model="queryParams.status" clearable placeholder="请选择状态">
           <el-option
@@ -109,7 +109,7 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" v-if="isAdmin" :data="postsList" @selection-change="handleSelectionChange">
+    <el-table v-if="isAdmin" v-loading="loading" :data="postsList" @selection-change="handleSelectionChange">
       <el-table-column align="center" type="selection" width="55"/>
       <!--      <el-table-column label="主键ID" align="center" prop="id" />-->
       <!--      <el-table-column label="用户ID" align="center" prop="userId" />-->
@@ -167,14 +167,19 @@
           <i class="el-icon-s-opportunity"></i>
           <el-badge :value="item.click" class="item" type="primary"></el-badge>
         </el-col>
-        <el-col :span="20">
+        <el-col :span="18">
           <router-link :to="`/biz/posts-detail/index/${item.id}`">
             <span style="font-size: 16px; font-weight: lighter; color: #1890ff">{{ item.title }}</span>
           </router-link>
           <span class="content" v-html="item.content"></span>
         </el-col>
-        <el-col :span="3">
-          <el-row>{{ item.createBy }}{{ item.createTime }}</el-row>
+        <el-col :span="5">
+          <el-row>
+            <el-col :span="12">
+              <i class="el-icon-user"></i>{{ item.createBy }}
+            </el-col>
+            <el-col :span="12">{{ item.createTime }}</el-col>
+          </el-row>
         </el-col>
       </el-row>
     </el-card>

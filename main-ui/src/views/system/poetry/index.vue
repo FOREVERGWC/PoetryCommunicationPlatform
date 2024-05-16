@@ -100,8 +100,8 @@
           <span>{{ row.bizPoetryCommentList.length }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="备注" prop="remark"/>
-      <el-table-column align="center" class-name="small-padding fixed-width" label="操作">
+      <el-table-column v-if="isAdmin" align="center" label="备注" prop="remark"/>
+      <el-table-column v-if="isAdmin" align="center" class-name="small-padding fixed-width" label="操作">
         <template slot-scope="scope">
           <el-button
             v-hasPermi="['system:poetry:edit']"
@@ -132,7 +132,7 @@
     />
 
     <!-- 添加或修改诗词对话框 -->
-    <el-dialog :title="title" :visible.sync="open" append-to-body width="900px">
+    <el-dialog :title="title" :visible.sync="open" append-to-body width="1200px">
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="标题" prop="title">
           <el-input v-model="form.title" placeholder="请输入内容" type="textarea"/>
@@ -169,9 +169,9 @@
         <div v-if="form.id">
           <el-divider content-position="center">诗词评论信息</el-divider>
           <el-row :gutter="10" class="mb8">
-            <el-col v-if="this.$auth.hasRole('admin')" :span="1.5">
-              <el-button icon="el-icon-plus" size="mini" type="primary" @click="handleAddBizPoetryComment">添加</el-button>
-            </el-col>
+            <!--            <el-col v-if="this.$auth.hasRole('admin')" :span="1.5">-->
+            <!--              <el-button icon="el-icon-plus" size="mini" type="primary" @click="handleAddBizPoetryComment">添加</el-button>-->
+            <!--            </el-col>-->
             <el-col :span="1.5">
               <el-button icon="el-icon-delete" size="mini" type="danger" @click="handleDeleteBizPoetryComment">删除</el-button>
             </el-col>
@@ -181,22 +181,27 @@
             <el-table-column align="center" label="序号" prop="index" width="50"/>
             <el-table-column label="用户ID" prop="userId" width="150">
               <template slot-scope="scope">
-                <el-input v-model="scope.row.userId" placeholder="请输入用户ID"/>
+                <el-input v-model="scope.row.userId" disabled placeholder="请输入用户ID"/>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" label="内容" prop="content">
+              <template slot-scope="scope">
+                <editor v-model="scope.row.content" :min-height="192"/>
               </template>
             </el-table-column>
             <el-table-column label="点赞量" prop="favor" width="150">
               <template slot-scope="scope">
-                <el-input v-model="scope.row.favor" placeholder="请输入点赞量"/>
+                <el-input v-model="scope.row.favor" disabled placeholder="请输入点赞量"/>
               </template>
             </el-table-column>
-            <el-table-column label="创建者" prop="createBy" width="150">
-              <template slot-scope="scope">
-                <el-input v-model="scope.row.createBy" placeholder="请输入创建者"/>
-              </template>
-            </el-table-column>
+            <!--            <el-table-column label="创建者" prop="createBy" width="150">-->
+            <!--              <template slot-scope="scope">-->
+            <!--                <el-input v-model="scope.row.createBy" placeholder="请输入创建者"/>-->
+            <!--              </template>-->
+            <!--            </el-table-column>-->
             <el-table-column label="创建时间" prop="createTime" width="240">
               <template slot-scope="scope">
-                <el-date-picker v-model="scope.row.createTime" clearable placeholder="请选择创建时间" type="date" value-format="yyyy-MM-dd"/>
+                <el-date-picker v-model="scope.row.createTime" clearable disabled placeholder="请选择创建时间" type="date" value-format="yyyy-MM-dd"/>
               </template>
             </el-table-column>
           </el-table>
@@ -218,6 +223,7 @@ export default {
   dicts: ['biz_poetry_dynasty'],
   data() {
     return {
+      isAdmin: this.$auth.hasRole('admin'),
       // 遮罩层
       loading: true,
       // 选中数组
@@ -267,24 +273,6 @@ export default {
         ],
         dynasty: [
           {required: true, message: "朝代不能为空", trigger: "change"}
-        ],
-        recitation: [
-          {required: true, message: "朗诵不能为空", trigger: "blur"}
-        ],
-        video: [
-          {required: true, message: "视频不能为空", trigger: "blur"}
-        ],
-        imgs: [
-          {required: true, message: "图片不能为空", trigger: "blur"}
-        ],
-        click: [
-          {required: true, message: "点击量不能为空", trigger: "blur"}
-        ],
-        createBy: [
-          {required: true, message: "创建者不能为空", trigger: "blur"}
-        ],
-        createTime: [
-          {required: true, message: "创建时间不能为空", trigger: "blur"}
         ]
       }
     };
@@ -324,7 +312,7 @@ export default {
         dynasty: null,
         recitation: null,
         video: null,
-        imgs: null,
+        imgs: '',
         click: null,
         createBy: null,
         createTime: null,

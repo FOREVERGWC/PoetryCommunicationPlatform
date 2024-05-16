@@ -6,7 +6,7 @@
           <el-col :span="12">
             <el-card shadow="hover" style="margin-left: 20px">
               <el-row>
-                {{ form.title }}
+                <h2 style="font-weight: bold">{{ form.title }}</h2>
               </el-row>
               <el-row>
                 <el-tag>

@@ -7,6 +7,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -176,9 +177,11 @@ public class BizPoetry extends BaseEntity {
     }
 
     public BizPoetry setImgList() {
-        this.imgList = Arrays.stream(this.imgs.split(",")).collect(Collectors.toList());
+        String str = Optional.ofNullable(this.imgs).orElse("");
+        this.imgList = Arrays.stream(str.split(",")).collect(Collectors.toList());
         return this;
     }
+
 
     @Override
     public String toString() {

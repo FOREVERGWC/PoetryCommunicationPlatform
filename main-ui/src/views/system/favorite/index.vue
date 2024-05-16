@@ -85,8 +85,7 @@
           </router-link>
         </template>
       </el-table-column>
-      <!--      <el-table-column align="center" label="用户ID" prop="userId"/>-->
-      <el-table-column align="center" label="创建者" prop="createBy"/>
+      <el-table-column align="center" label="创建者" prop="createBy" v-if="isAdmin"/>
       <el-table-column align="center" label="创建时间" prop="createTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
@@ -148,6 +147,7 @@ export default {
   name: "Favorite",
   data() {
     return {
+      isAdmin: this.$auth.hasRole('admin'),
       // 遮罩层
       loading: true,
       // 选中数组

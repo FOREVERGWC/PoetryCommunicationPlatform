@@ -74,7 +74,8 @@ Vue.use(plugins)
 Vue.use(VueMeta)
 Vue.use(VueAudio)
 DictData.install()
-
+// 禁止点击空白处关闭对话框
+Element.Dialog.props.closeOnClickModal.default = false
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
