@@ -14,6 +14,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -53,6 +54,9 @@ public class BizPoetryCommentServiceImpl implements IBizPoetryCommentService {
     @Override
     public List<BizPoetryComment> selectBizPoetryCommentList(BizPoetryComment bizPoetryComment) {
         List<BizPoetryComment> bizPoetryCommentList = bizPoetryCommentMapper.selectBizPoetryCommentList(bizPoetryComment);
+        if (bizPoetryCommentList.isEmpty()) {
+            return new ArrayList<>();
+        }
         // 用户信息
         List<Long> userIds = bizPoetryCommentList.stream().map(BizPoetryComment::getUserId).collect(Collectors.toList());
         List<SysUser> userList = sysUserMapper.selectUsersByUserIds(userIds);
