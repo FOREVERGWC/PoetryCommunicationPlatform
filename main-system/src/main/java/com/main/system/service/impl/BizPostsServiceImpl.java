@@ -1,5 +1,6 @@
 package com.main.system.service.impl;
 
+import com.main.common.core.domain.entity.SysDictData;
 import com.main.common.utils.DateUtils;
 import com.main.common.utils.SecurityUtils;
 import com.main.system.domain.BizPosts;
@@ -7,11 +8,14 @@ import com.main.system.domain.BizPostsBrowse;
 import com.main.system.mapper.BizPostsBrowseMapper;
 import com.main.system.mapper.BizPostsMapper;
 import com.main.system.service.IBizPostsService;
+import com.main.system.service.ISysDictDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 帖子Service业务层处理
@@ -25,6 +29,8 @@ public class BizPostsServiceImpl implements IBizPostsService {
     private BizPostsMapper bizPostsMapper;
     @Autowired
     private BizPostsBrowseMapper bizPostsBrowseMapper;
+    @Autowired
+    private ISysDictDataService sysDictDataService;
 
     /**
      * 查询帖子
@@ -34,7 +40,11 @@ public class BizPostsServiceImpl implements IBizPostsService {
      */
     @Override
     public BizPosts selectBizPostsById(Long id) {
-        return bizPostsMapper.selectBizPostsById(id);
+        BizPosts bizPosts = bizPostsMapper.selectBizPostsById(id);
+        // 字典
+        String dictLabel = sysDictDataService.selectDictLabel("biz_posts_status", bizPosts.getStatus());
+        bizPosts.setStatusText(dictLabel);
+        return bizPosts;
     }
 
     /**
@@ -45,7 +55,16 @@ public class BizPostsServiceImpl implements IBizPostsService {
      */
     @Override
     public List<BizPosts> selectBizPostsList(BizPosts bizPosts) {
-        return bizPostsMapper.selectBizPostsList(bizPosts);
+        List<BizPosts> bizPostsList = bizPostsMapper.selectBizPostsList(bizPosts);
+        // 字典
+        SysDictData sysDictData = new SysDictData();
+        sysDictData.setDictType("biz_posts_status");
+        List<SysDictData> dictData = sysDictDataService.selectDictDataList(sysDictData);
+        Map<String, String> dictDataMap = dictData.stream().collect(Collectors.toMap(SysDictData::getDictValue, SysDictData::getDictLabel));
+        bizPostsList.forEach(item -> {
+            item.setStatusText(dictDataMap.get(item.getStatus()));
+        });
+        return bizPostsList;
     }
 
     /**
