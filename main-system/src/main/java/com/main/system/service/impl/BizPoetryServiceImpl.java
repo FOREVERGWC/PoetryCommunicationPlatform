@@ -6,8 +6,10 @@ import com.main.common.utils.SecurityUtils;
 import com.main.common.utils.StringUtils;
 import com.main.system.domain.BizPoetry;
 import com.main.system.domain.BizPoetryComment;
+import com.main.system.domain.BizPoetryFavorite;
 import com.main.system.mapper.BizPoetryMapper;
 import com.main.system.service.IBizPoetryCommentService;
+import com.main.system.service.IBizPoetryFavoriteService;
 import com.main.system.service.IBizPoetryService;
 import com.main.system.service.ISysDictDataService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,8 @@ public class BizPoetryServiceImpl implements IBizPoetryService {
     private IBizPoetryCommentService bizPoetryCommentService;
     @Resource
     private ISysDictDataService sysDictDataService;
+    @Resource
+    private IBizPoetryFavoriteService bizPoetryFavoriteService;
 
     /**
      * 查询诗词
@@ -53,6 +57,12 @@ public class BizPoetryServiceImpl implements IBizPoetryService {
         List<BizPoetryComment> bizPoetryCommentList = bizPoetryCommentService.selectBizPoetryCommentList(bizPoetryComment);
         bizPoetry.setBizPoetryCommentList(bizPoetryCommentList);
         bizPoetry.setImgList();
+        // 收藏
+        BizPoetryFavorite bizPoetryFavorite = bizPoetryFavoriteService.selectBizPoetryFavoriteByPoetryId(id);
+        bizPoetry.setFavorite(bizPoetryFavorite != null);
+        // 收藏量
+        int favorites = bizPoetryFavoriteService.countByPoetryId(id);
+        bizPoetry.setFavorites(favorites);
         return bizPoetry;
     }
 

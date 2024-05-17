@@ -100,4 +100,12 @@ public interface BizPoetryMapper {
      * @return 结果
      */
     List<BizPoetry> selectBizPoetryListByIds(List<Long> ids);
+
+    /**
+     * 根据诗词ID获取诗词收藏量
+     *
+     * @param poetryId 诗词ID
+     * @return 结果
+     */
+    int countByPoetryId(Long poetryId);
 }

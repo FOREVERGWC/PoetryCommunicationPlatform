@@ -79,6 +79,13 @@
         </foreach>
     </select>
 
+
+    <select id="countByPoetryId" resultType="int">
+        SELECT COUNT(id)
+        FROM biz_poetry_favorite
+        WHERE poetry_id = 1
+    </select>
+
     <insert id="insertBizPoetry" parameterType="BizPoetry" useGeneratedKeys="true" keyProperty="id">
         insert into biz_poetry
         <trim prefix="(" suffix=")" suffixOverrides=",">

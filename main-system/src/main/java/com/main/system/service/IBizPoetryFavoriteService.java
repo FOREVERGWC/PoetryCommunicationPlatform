@@ -68,6 +68,14 @@ public interface IBizPoetryFavoriteService {
     BizPoetryFavorite selectBizPoetryFavoriteByPoetryId(Long poetryId);
 
     /**
+     * 根据诗词ID获取诗词收藏量
+     *
+     * @param poetryId 诗词ID
+     * @return 结果
+     */
+    int countByPoetryId(Long poetryId);
+
+    /**
      * 用户诗词收藏、取消
      *
      * @param poetryId 诗词ID

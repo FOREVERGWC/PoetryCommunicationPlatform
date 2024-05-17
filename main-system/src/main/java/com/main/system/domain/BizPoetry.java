@@ -82,6 +82,14 @@ public class BizPoetry extends BaseEntity {
      * 诗词评论信息
      */
     private List<BizPoetryComment> bizPoetryCommentList;
+    /**
+     * 是否收藏
+     */
+    private Boolean isFavorite;
+    /**
+     * 收藏量
+     */
+    private Integer favorites;
 
     public Long getId() {
         return id;
@@ -182,6 +190,23 @@ public class BizPoetry extends BaseEntity {
         return this;
     }
 
+    public Boolean getFavorite() {
+        return isFavorite;
+    }
+
+    public BizPoetry setFavorite(Boolean favorite) {
+        isFavorite = favorite;
+        return this;
+    }
+
+    public Integer getFavorites() {
+        return favorites;
+    }
+
+    public BizPoetry setFavorites(Integer favorites) {
+        this.favorites = favorites;
+        return this;
+    }
 
     @Override
     public String toString() {

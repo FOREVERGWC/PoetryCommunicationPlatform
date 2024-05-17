@@ -111,7 +111,15 @@ public class BizPoetryFavoriteServiceImpl implements IBizPoetryFavoriteService {
     @Override
     public BizPoetryFavorite selectBizPoetryFavoriteByPoetryId(Long poetryId) {
         Long userId = SecurityUtils.getUserId();
+        if (userId == null) {
+            return null;
+        }
         return bizPoetryFavoriteMapper.selectBizPoetryFavoriteByPoetryIdAndUserId(userId, poetryId);
+    }
+
+    @Override
+    public int countByPoetryId(Long poetryId) {
+        return bizPoetryMapper.countByPoetryId(poetryId);
     }
 
     @Override

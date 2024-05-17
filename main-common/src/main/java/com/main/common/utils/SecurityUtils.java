@@ -32,7 +32,8 @@ public class SecurityUtils
         }
         catch (Exception e)
         {
-            throw new ServiceException("获取用户ID异常", HttpStatus.UNAUTHORIZED);
+            return null;
+//            throw new ServiceException("获取用户ID异常", HttpStatus.UNAUTHORIZED);
         }
     }
 
