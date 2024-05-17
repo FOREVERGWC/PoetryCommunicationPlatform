@@ -3,7 +3,7 @@ package com.main.web.controller.common;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.google.code.kaptcha.Producer;
-import com.main.common.config.RuoYiConfig;
+import com.main.common.config.MainConfig;
 import com.main.common.constant.CacheConstants;
 import com.main.common.constant.Constants;
 import com.main.common.core.domain.AjaxResult;
@@ -68,7 +68,7 @@ public class CaptchaController {
         BufferedImage image = null;
 
         // 生成验证码
-        String captchaType = RuoYiConfig.getCaptchaType();
+        String captchaType = MainConfig.getCaptchaType();
         if ("math".equals(captchaType)) {
             String capText = captchaProducerMath.createText();
             capStr = capText.substring(0, capText.lastIndexOf("@"));

@@ -4,14 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import com.main.common.config.RuoYiConfig;
+import com.main.common.config.MainConfig;
 import com.main.common.constant.Constants;
 import com.main.common.utils.StringUtils;
 import com.main.common.utils.http.HttpUtils;
 
 /**
  * 获取地址类
- * 
+ *
  * @author admin
  */
 public class AddressUtils
@@ -31,7 +31,7 @@ public class AddressUtils
         {
             return "内网IP";
         }
-        if (RuoYiConfig.isAddressEnabled())
+        if (MainConfig.isAddressEnabled())
         {
             try
             {
