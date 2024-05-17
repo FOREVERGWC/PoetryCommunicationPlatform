@@ -3,6 +3,7 @@ package com.main.web.controller.system;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
+import cn.hutool.json.JSONUtil;
 import com.main.common.constant.Constants;
 import com.main.common.core.domain.AjaxResult;
 import com.main.common.core.domain.entity.SysMenu;
@@ -64,10 +65,14 @@ public class SysLoginController {
 
         Map<String, Object> map = BeanUtil.beanToMap(loginBody);
         try (HttpResponse response = HttpUtil.createGet("https://api.weixin.qq.com/sns/jscode2session").form(map).execute()) {
+            String body = response.body();
             if (!response.isOk()) {
-                throw new ServiceException(response.body());
+                throw new ServiceException(body);
             }
-            WechatResponse wechatResponse = BeanUtil.toBean(response.body(), WechatResponse.class);
+            WechatResponse wechatResponse = JSONUtil.toBean(body, WechatResponse.class);
+            if (wechatResponse == null || wechatResponse.getErrcode() != 200) {
+                throw new ServiceException("登录失败!" + body);
+            }
             // 判断登录状态
             String token = loginService.wechatLogin(wechatResponse);
             ajax.put(Constants.TOKEN, token);

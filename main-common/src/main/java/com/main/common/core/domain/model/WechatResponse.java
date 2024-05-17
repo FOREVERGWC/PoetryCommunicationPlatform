@@ -1,6 +1,9 @@
 package com.main.common.core.domain.model;
 
-public class WechatResponse {
+import java.io.Serializable;
+
+public class WechatResponse implements Serializable {
+    private static final long serialVersionUID = 7808780638744847710L;
     private Integer errcode;
     private String errmsg;
     /**
@@ -12,6 +15,17 @@ public class WechatResponse {
      * 会话密钥
      */
     private String session_key;
+
+    public WechatResponse() {
+    }
+
+    public WechatResponse(Integer errcode, String errmsg, String openid, String unionid, String session_key) {
+        this.errcode = errcode;
+        this.errmsg = errmsg;
+        this.openid = openid;
+        this.unionid = unionid;
+        this.session_key = session_key;
+    }
 
     public Integer getErrcode() {
         return errcode;
