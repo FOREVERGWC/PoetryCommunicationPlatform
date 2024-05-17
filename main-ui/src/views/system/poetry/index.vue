@@ -75,7 +75,7 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="poetryList" @selection-change="handleSelectionChange">
+    <el-table v-if="isAdmin" v-loading="loading" :data="poetryList" @selection-change="handleSelectionChange">
       <el-table-column align="center" type="selection" width="55"/>
       <el-table-column align="center" label="标题">
         <template v-slot="{row}">
@@ -122,6 +122,40 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <el-card v-for="item in poetryList" v-else :key="item.id" shadow="hover">
+      <el-row>
+        <router-link :to="`/biz/poetry-detail/index/${item.id}`">
+          <el-link :underline="false">
+            <h2 style="font-weight: bold">《{{ item.title }}》</h2>
+          </el-link>
+        </router-link>
+      </el-row>
+      <el-row>
+        <el-tag>
+          <svg-icon icon-class="author"/>
+          {{ item.author }}
+        </el-tag>
+        <el-tag type="success">
+          <dict-tag :options="dict.type.biz_poetry_dynasty" :value="item.dynasty"/>
+        </el-tag>
+        <el-tag type="info">
+          <svg-icon icon-class="eye-open"/>
+          {{ item.click }}
+        </el-tag>
+        <el-tag>
+          <i class="el-icon-bell"></i>
+          {{ item.bizPoetryCommentList.length }}
+        </el-tag>
+        <el-tag type="warning">
+          <i class="el-icon-time"/>
+          {{ item.createTime }}
+        </el-tag>
+      </el-row>
+      <el-row>
+        <span v-html="item.content"></span>
+      </el-row>
+    </el-card>
 
     <pagination
       v-show="total>0"
@@ -432,5 +466,17 @@ export default {
 <style lang="scss" scoped>
 .el-select {
   width: 100%;
+}
+
+.el-card {
+  margin-bottom: 20px;
+}
+
+.el-tag {
+  margin-right: 10px;
+}
+
+.el-icon-time, .el-icon-bell, .svg-icon {
+  margin-right: 5px;
 }
 </style>
