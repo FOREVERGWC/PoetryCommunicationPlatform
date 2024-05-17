@@ -1,6 +1,14 @@
 <template>
   <div class="app-container">
     <el-form v-show="showSearch" ref="queryForm" :inline="true" :model="queryParams" label-width="68px" size="small">
+      <el-form-item label="标题" prop="title">
+        <el-input
+          v-model="queryParams.title"
+          clearable
+          placeholder="请输入标题"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
       <el-form-item label="作者" prop="author">
         <el-input
           v-model="queryParams.author"
@@ -18,6 +26,14 @@
             :value="dict.value"
           />
         </el-select>
+      </el-form-item>
+      <el-form-item label="诗句" prop="content">
+        <el-input
+          v-model="queryParams.content"
+          clearable
+          placeholder="请输入诗句"
+          @keyup.enter.native="handleQuery"
+        />
       </el-form-item>
       <el-form-item>
         <el-button icon="el-icon-search" size="mini" type="primary" @click="handleQuery">搜索</el-button>

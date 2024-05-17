@@ -58,8 +58,8 @@
     <select id="selectBizPoetryList" parameterType="BizPoetry" resultMap="BizPoetryResult">
         <include refid="selectBizPoetryVo"/>
         <where>
-            <if test="title != null  and title != ''">and title = #{title}</if>
-            <if test="content != null  and content != ''">and content = #{content}</if>
+            <if test="title != null  and title != ''">and title like concat('%', #{title}, '%')</if>
+            <if test="content != null  and content != ''">and content like concat('%', #{content}, '%')</if>
             <if test="author != null  and author != ''">and author like concat('%', #{author}, '%')</if>
             <if test="dynasty != null  and dynasty != ''">and dynasty = #{dynasty}</if>
             <if test="remark != null  and remark != ''">and remark like concat('%', #{remark}, '%')</if>
