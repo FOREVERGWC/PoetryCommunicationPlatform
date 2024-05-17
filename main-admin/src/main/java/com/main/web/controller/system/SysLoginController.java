@@ -67,6 +67,7 @@ public class SysLoginController {
                 throw new ServiceException(response.body());
             }
             WechatResponse wechatResponse = BeanUtil.toBean(response.body(), WechatResponse.class);
+            // 判断登录状态
             String token = loginService.wechatLogin(wechatResponse.getOpenid());
             ajax.put(Constants.TOKEN, token);
             return ajax;
