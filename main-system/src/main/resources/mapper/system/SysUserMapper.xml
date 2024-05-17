@@ -195,7 +195,7 @@
         where u.phonenumber = #{phone}
     </select>
 
-    <select id="selectUserByOpenId" resultType="com.main.common.core.domain.entity.SysUser">
+    <select id="selectUserByOpenId" resultMap="SysUserResult">
         <include refid="selectUserVo"/>
         where u.openid = #{openId}
     </select>
@@ -204,6 +204,7 @@
         insert into sys_user(
         <if test="userId != null and userId != 0">user_id,</if>
         <if test="deptId != null and deptId != 0">dept_id,</if>
+        <if test="openId != null and openId != ''">openid,</if>
         <if test="userName != null and userName != ''">user_name,</if>
         <if test="nickName != null and nickName != ''">nick_name,</if>
         <if test="email != null and email != ''">email,</if>
@@ -218,6 +219,7 @@
         )values(
         <if test="userId != null and userId != ''">#{userId},</if>
         <if test="deptId != null and deptId != ''">#{deptId},</if>
+        <if test="openId != null and openId != ''">#{openId},</if>
         <if test="userName != null and userName != ''">#{userName},</if>
         <if test="nickName != null and nickName != ''">#{nickName},</if>
         <if test="email != null and email != ''">#{email},</if>

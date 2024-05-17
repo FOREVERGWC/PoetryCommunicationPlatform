@@ -8,6 +8,9 @@ public class WechatResponse {
      */
     private String openid;
     private String unionid;
+    /**
+     * 会话密钥
+     */
     private String session_key;
 
     public Integer getErrcode() {

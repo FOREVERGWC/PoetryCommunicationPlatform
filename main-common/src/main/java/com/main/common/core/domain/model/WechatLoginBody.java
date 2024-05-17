@@ -21,6 +21,15 @@ public class WechatLoginBody {
      * 手机号
      */
     private String phone;
+    /**
+     * 用户唯一标识码
+     */
+    private String openid;
+    /**
+     * 会话密钥
+     */
+    private String session_key;
+
 
     public String getAppid() {
         return appid;
@@ -64,6 +73,24 @@ public class WechatLoginBody {
 
     public WechatLoginBody setPhone(String phone) {
         this.phone = phone;
+        return this;
+    }
+
+    public String getOpenid() {
+        return openid;
+    }
+
+    public WechatLoginBody setOpenid(String openid) {
+        this.openid = openid;
+        return this;
+    }
+
+    public String getSession_key() {
+        return session_key;
+    }
+
+    public WechatLoginBody setSession_key(String session_key) {
+        this.session_key = session_key;
         return this;
     }
 }

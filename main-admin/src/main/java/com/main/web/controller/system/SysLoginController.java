@@ -61,6 +61,7 @@ public class SysLoginController {
         AjaxResult ajax = AjaxResult.success();
         loginBody.setAppid(appid);
         loginBody.setSecret(secret);
+
         Map<String, Object> map = BeanUtil.beanToMap(loginBody);
         try (HttpResponse response = HttpUtil.createGet("https://api.weixin.qq.com/sns/jscode2session").form(map).execute()) {
             if (!response.isOk()) {
@@ -68,7 +69,7 @@ public class SysLoginController {
             }
             WechatResponse wechatResponse = BeanUtil.toBean(response.body(), WechatResponse.class);
             // 判断登录状态
-            String token = loginService.wechatLogin(wechatResponse.getOpenid());
+            String token = loginService.wechatLogin(wechatResponse);
             ajax.put(Constants.TOKEN, token);
             return ajax;
         } catch (Exception e) {

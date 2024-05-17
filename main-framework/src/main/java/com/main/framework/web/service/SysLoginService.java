@@ -5,6 +5,7 @@ import com.main.common.constant.Constants;
 import com.main.common.constant.UserConstants;
 import com.main.common.core.domain.entity.SysUser;
 import com.main.common.core.domain.model.LoginUser;
+import com.main.common.core.domain.model.WechatResponse;
 import com.main.common.core.redis.RedisCache;
 import com.main.common.exception.ServiceException;
 import com.main.common.exception.user.*;
@@ -92,18 +93,20 @@ public class SysLoginService {
     /**
      * 微信登录
      *
-     * @param openId 用户唯一标识码
+     * @param response 请求体
      * @return 结果
      */
-    public String wechatLogin(String openId) {
-        // 根据手机号从数据库查询用户，查不到则注册用户，否则返回token
-//        SysUser user = userService.selectUserByPhone(openId);
+    public String wechatLogin(WechatResponse response) {
+        String openId = response.getOpenid();
+        String sessionKey = response.getSession_key();
+        // 根据用户唯一标识码从数据库查询用户，查不到则注册用户，否则返回token
         SysUser user = userService.selectUserByOpenId(openId);
         if (user == null) {
             user = new SysUser();
             String uuid = UUID.randomUUID().toString();
+            user.setOpenId(openId);
             user.setUserName(uuid);
-            user.setNickName("微信用户" + uuid);
+            user.setNickName("微信用户");
             user.setPassword(SecurityUtils.encryptPassword("123456"));
             user.setPhonenumber("");
             boolean flag = userService.registerUser(user);
@@ -113,29 +116,16 @@ public class SysLoginService {
             } else {
                 AsyncManager.me().execute(AsyncFactory.recordLogininfor(uuid, Constants.REGISTER, MessageUtils.message("user.register.success")));
             }
+            user = userService.selectUserByOpenId(openId);
         }
         // 用户验证
-        Authentication authentication;
         String username = user.getUserName();
-//        user.setPassword("123456");
-        try {
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, user.getPassword());
-            AuthenticationContextHolder.setContext(authenticationToken);
-            // 该方法会去调用UserDetailsServiceImpl.loadUserByUsername
-            authentication = authenticationManager.authenticate(authenticationToken);
-        } catch (Exception e) {
-            if (e instanceof BadCredentialsException) {
-                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.password.not.match")));
-                throw new UserPasswordNotMatchException();
-            } else {
-                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, e.getMessage()));
-                throw new ServiceException(e.getMessage());
-            }
-        } finally {
-            AuthenticationContextHolder.clearContext();
-        }
+        LoginUser loginUser = new LoginUser();
+        loginUser.setUser(user);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(openId, sessionKey);
+        authenticationToken.setDetails(loginUser);
+        AuthenticationContextHolder.setContext(authenticationToken);
         AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success")));
-        LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         recordLoginInfo(loginUser.getUserId());
         // 生成token
         return tokenService.createToken(loginUser);
