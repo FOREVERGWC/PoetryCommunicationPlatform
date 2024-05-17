@@ -28,6 +28,10 @@ public class BizPoetryFavorite extends BaseEntity {
      * 诗词标题
      */
     private String poetryTitle;
+    /**
+     * 诗词
+     */
+    private BizPoetry bizPoetry;
 
     /**
      * 用户ID
@@ -66,6 +70,15 @@ public class BizPoetryFavorite extends BaseEntity {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public BizPoetry getBizPoetry() {
+        return bizPoetry;
+    }
+
+    public BizPoetryFavorite setBizPoetry(BizPoetry bizPoetry) {
+        this.bizPoetry = bizPoetry;
+        return this;
     }
 
     @Override

@@ -55,9 +55,13 @@ public class BizPoetryFavoriteServiceImpl implements IBizPoetryFavoriteService {
         // 诗词信息
         List<Long> poetryIds = bizPoetryFavorites.stream().map(BizPoetryFavorite::getPoetryId).collect(Collectors.toList());
         List<BizPoetry> poetryList = bizPoetryMapper.selectBizPoetryListByIds(poetryIds);
-        Map<Long, String> titleMap = poetryList.stream().collect(Collectors.toMap(BizPoetry::getId, BizPoetry::getTitle));
+        Map<Long, BizPoetry> poetryMap = poetryList.stream().collect(Collectors.toMap(BizPoetry::getId, item -> item));
         return bizPoetryFavorites.stream()
-                .peek(item -> item.setPoetryTitle(titleMap.get(item.getPoetryId())))
+                .peek(item -> {
+                    BizPoetry bizPoetry = poetryMap.get(item.getPoetryId());
+                    item.setPoetryTitle(bizPoetry.getTitle());
+                    item.setBizPoetry(bizPoetry);
+                })
                 .collect(Collectors.toList());
     }
 
