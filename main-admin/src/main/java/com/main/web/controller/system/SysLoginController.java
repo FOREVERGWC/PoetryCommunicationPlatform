@@ -70,7 +70,7 @@ public class SysLoginController {
                 throw new ServiceException(body);
             }
             WechatResponse wechatResponse = JSONUtil.toBean(body, WechatResponse.class);
-            if (wechatResponse == null || wechatResponse.getErrcode() != 200) {
+            if (wechatResponse == null || wechatResponse.getErrcode() != null) {
                 throw new ServiceException("登录失败!" + body);
             }
             // 判断登录状态
