@@ -30,7 +30,7 @@ public class BizPoetryController extends BaseController {
     /**
      * 查询诗词列表
      */
-    @PreAuthorize("@ss.hasPermi('system:poetry:list')")
+//    @PreAuthorize("@ss.hasPermi('system:poetry:list')")
     @GetMapping("/list")
     public TableDataInfo list(BizPoetry bizPoetry) {
         startPage();

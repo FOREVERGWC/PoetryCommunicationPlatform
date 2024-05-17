@@ -30,7 +30,7 @@ public class BizPostsController extends BaseController {
     /**
      * 查询帖子列表
      */
-    @PreAuthorize("@ss.hasPermi('system:posts:list')")
+//    @PreAuthorize("@ss.hasPermi('system:posts:list')")
     @GetMapping("/list")
     public TableDataInfo list(BizPosts bizPosts) {
         startPage();
