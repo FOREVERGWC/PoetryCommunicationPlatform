@@ -211,4 +211,12 @@ public interface ISysUserService {
      * @return 用户信息
      */
     SysUser selectUserByPhone(String phone);
+
+    /**
+     * 根据微信小程序唯一标识查询用户
+     *
+     * @param openId 用户唯一标识码
+     * @return 用户信息
+     */
+    SysUser selectUserByOpenId(String openId);
 }

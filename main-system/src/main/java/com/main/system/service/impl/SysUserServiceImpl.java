@@ -482,4 +482,9 @@ public class SysUserServiceImpl implements ISysUserService {
     public SysUser selectUserByPhone(String phone) {
         return userMapper.selectUserByPhone(phone);
     }
+
+    @Override
+    public SysUser selectUserByOpenId(String openId) {
+        return userMapper.selectUserByOpenId(openId);
+    }
 }

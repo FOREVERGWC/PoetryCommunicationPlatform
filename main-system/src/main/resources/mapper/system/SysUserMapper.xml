@@ -7,6 +7,7 @@
     <resultMap type="SysUser" id="SysUserResult">
         <id property="userId" column="user_id"/>
         <result property="deptId" column="dept_id"/>
+        <result property="openId" column="openid"/>
         <result property="userName" column="user_name"/>
         <result property="nickName" column="nick_name"/>
         <result property="email" column="email"/>
@@ -49,6 +50,7 @@
     <sql id="selectUserVo">
         select u.user_id,
                u.dept_id,
+               u.openid,
                u.user_name,
                u.nick_name,
                u.email,
@@ -191,6 +193,11 @@
     <select id="selectUserByPhone" resultMap="SysUserResult">
         <include refid="selectUserVo"/>
         where u.phonenumber = #{phone}
+    </select>
+
+    <select id="selectUserByOpenId" resultType="com.main.common.core.domain.entity.SysUser">
+        <include refid="selectUserVo"/>
+        where u.openid = #{openId}
     </select>
 
     <insert id="insertUser" parameterType="SysUser" useGeneratedKeys="true" keyProperty="userId">

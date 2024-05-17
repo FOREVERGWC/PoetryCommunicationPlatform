@@ -26,6 +26,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.UUID;
 
 /**
  * 登录校验方法
@@ -91,24 +92,26 @@ public class SysLoginService {
     /**
      * 微信登录
      *
-     * @param phone 手机号
+     * @param openId 用户唯一标识码
      * @return 结果
      */
-    public String wechatLogin(String phone) {
+    public String wechatLogin(String openId) {
         // 根据手机号从数据库查询用户，查不到则注册用户，否则返回token
-        SysUser user = userService.selectUserByPhone(phone);
+//        SysUser user = userService.selectUserByPhone(openId);
+        SysUser user = userService.selectUserByOpenId(openId);
         if (user == null) {
             user = new SysUser();
-            user.setUserName(phone);
-            user.setNickName("微信用户" + phone);
+            String uuid = UUID.randomUUID().toString();
+            user.setUserName("");
+            user.setNickName("微信用户" + uuid);
             user.setPassword(SecurityUtils.encryptPassword("123456"));
-            user.setPhonenumber(phone);
+            user.setPhonenumber("");
             boolean flag = userService.registerUser(user);
             userService.insertUserAuth(user.getUserId(), new Long[]{2L});
             if (!flag) {
                 throw new ServiceException("注册失败！请联系系统管理人员");
             } else {
-                AsyncManager.me().execute(AsyncFactory.recordLogininfor(phone, Constants.REGISTER, MessageUtils.message("user.register.success")));
+                AsyncManager.me().execute(AsyncFactory.recordLogininfor(uuid, Constants.REGISTER, MessageUtils.message("user.register.success")));
             }
         }
         // 用户验证
