@@ -43,7 +43,7 @@ public class BizPostsReplyController extends BaseController {
     /**
      * 查询帖子回复列表
      */
-    @PreAuthorize("@ss.hasPermi('system:reply:list')")
+//    @PreAuthorize("@ss.hasPermi('system:reply:list')")
     @Anonymous
     @GetMapping("/list")
     public TableDataInfo list(BizPostsReply bizPostsReply) {

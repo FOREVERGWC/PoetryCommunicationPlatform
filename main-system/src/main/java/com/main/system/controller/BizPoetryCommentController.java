@@ -31,7 +31,7 @@ public class BizPoetryCommentController extends BaseController {
     /**
      * 查询诗词评论列表
      */
-    @PreAuthorize("@ss.hasPermi('system:comment:list')")
+//    @PreAuthorize("@ss.hasPermi('system:comment:list')")
     @Anonymous
     @GetMapping("/list")
     public TableDataInfo list(BizPoetryComment bizPoetryComment) {

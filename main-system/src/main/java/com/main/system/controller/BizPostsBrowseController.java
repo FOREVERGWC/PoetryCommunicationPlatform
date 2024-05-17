@@ -31,7 +31,7 @@ public class BizPostsBrowseController extends BaseController {
     /**
      * 查询帖子浏览记录列表
      */
-    @PreAuthorize("@ss.hasPermi('system:browse:list')")
+//    @PreAuthorize("@ss.hasPermi('system:browse:list')")
     @Anonymous
     @GetMapping("/list")
     public TableDataInfo list(BizPostsBrowse bizPostsBrowse) {
