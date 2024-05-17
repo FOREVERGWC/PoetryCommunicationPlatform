@@ -55,7 +55,8 @@ public class BizPoetryController extends BaseController {
     /**
      * 获取诗词详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:poetry:query')")
+    @Anonymous
+//    @PreAuthorize("@ss.hasPermi('system:poetry:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id) {
         return success(bizPoetryService.selectBizPoetryById(id));

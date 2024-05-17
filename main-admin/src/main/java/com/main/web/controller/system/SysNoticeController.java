@@ -1,6 +1,8 @@
 package com.main.web.controller.system;
 
 import java.util.List;
+
+import com.main.common.annotation.Anonymous;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -35,7 +37,8 @@ public class SysNoticeController extends BaseController
     /**
      * 获取通知公告列表
      */
-    @PreAuthorize("@ss.hasPermi('system:notice:list')")
+//    @PreAuthorize("@ss.hasPermi('system:notice:list')")
+    @Anonymous
     @GetMapping("/list")
     public TableDataInfo list(SysNotice notice)
     {
@@ -47,7 +50,8 @@ public class SysNoticeController extends BaseController
     /**
      * 根据通知公告编号获取详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:notice:query')")
+    @Anonymous
+//    @PreAuthorize("@ss.hasPermi('system:notice:query')")
     @GetMapping(value = "/{noticeId}")
     public AjaxResult getInfo(@PathVariable Long noticeId)
     {

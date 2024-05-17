@@ -55,7 +55,8 @@ public class BizPostsBrowseController extends BaseController {
     /**
      * 获取帖子浏览记录详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:browse:query')")
+    @Anonymous
+//    @PreAuthorize("@ss.hasPermi('system:browse:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id) {
         return success(bizPostsBrowseService.selectBizPostsBrowseById(id));

@@ -102,7 +102,8 @@ public class BizPostsReplyController extends BaseController {
     /**
      * 获取帖子回复详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:reply:query')")
+    @Anonymous
+//    @PreAuthorize("@ss.hasPermi('system:reply:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id) {
         return success(bizPostsReplyService.selectBizPostsReplyById(id));

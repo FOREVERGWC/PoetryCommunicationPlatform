@@ -55,7 +55,8 @@ public class BizPostsController extends BaseController {
     /**
      * 获取帖子详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:posts:query')")
+    @Anonymous
+//    @PreAuthorize("@ss.hasPermi('system:posts:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id) {
         return success(bizPostsService.selectBizPostsById(id));

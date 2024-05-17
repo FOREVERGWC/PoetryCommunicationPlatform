@@ -55,7 +55,8 @@ public class BizPoetryCommentController extends BaseController {
     /**
      * 获取诗词评论详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:comment:query')")
+//    @PreAuthorize("@ss.hasPermi('system:comment:query')")
+    @Anonymous
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id) {
         return success(bizPoetryCommentService.selectBizPoetryCommentById(id));

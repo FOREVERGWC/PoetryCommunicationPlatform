@@ -55,7 +55,8 @@ public class BizPoetryFavoriteController extends BaseController {
     /**
      * 获取用户诗词收藏详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:favorite:query')")
+    @Anonymous
+//    @PreAuthorize("@ss.hasPermi('system:favorite:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id) {
         return success(bizPoetryFavoriteService.selectBizPoetryFavoriteById(id));
