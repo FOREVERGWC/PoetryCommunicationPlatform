@@ -1,5 +1,6 @@
 package com.main.system.controller;
 
+import com.main.common.annotation.Anonymous;
 import com.main.common.annotation.Log;
 import com.main.common.core.controller.BaseController;
 import com.main.common.core.domain.AjaxResult;
@@ -30,7 +31,8 @@ public class BizPoetryFavoriteController extends BaseController {
     /**
      * 查询用户诗词收藏列表
      */
-//    @PreAuthorize("@ss.hasPermi('system:favorite:list')")
+    @PreAuthorize("@ss.hasPermi('system:favorite:list')")
+    @Anonymous
     @GetMapping("/list")
     public TableDataInfo list(BizPoetryFavorite bizPoetryFavorite) {
         startPage();

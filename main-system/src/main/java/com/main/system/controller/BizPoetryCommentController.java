@@ -1,25 +1,20 @@
 package com.main.system.controller;
 
-import java.util.List;
-import javax.servlet.http.HttpServletResponse;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.main.common.annotation.Anonymous;
 import com.main.common.annotation.Log;
 import com.main.common.core.controller.BaseController;
 import com.main.common.core.domain.AjaxResult;
+import com.main.common.core.page.TableDataInfo;
 import com.main.common.enums.BusinessType;
+import com.main.common.utils.poi.ExcelUtil;
 import com.main.system.domain.BizPoetryComment;
 import com.main.system.service.IBizPoetryCommentService;
-import com.main.common.utils.poi.ExcelUtil;
-import com.main.common.core.page.TableDataInfo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * 诗词评论Controller
@@ -29,18 +24,17 @@ import com.main.common.core.page.TableDataInfo;
  */
 @RestController
 @RequestMapping("/system/comment")
-public class BizPoetryCommentController extends BaseController
-{
+public class BizPoetryCommentController extends BaseController {
     @Autowired
     private IBizPoetryCommentService bizPoetryCommentService;
 
     /**
      * 查询诗词评论列表
      */
-//    @PreAuthorize("@ss.hasPermi('system:comment:list')")
+    @PreAuthorize("@ss.hasPermi('system:comment:list')")
+    @Anonymous
     @GetMapping("/list")
-    public TableDataInfo list(BizPoetryComment bizPoetryComment)
-    {
+    public TableDataInfo list(BizPoetryComment bizPoetryComment) {
         startPage();
         List<BizPoetryComment> list = bizPoetryCommentService.selectBizPoetryCommentList(bizPoetryComment);
         return getDataTable(list);
@@ -52,8 +46,7 @@ public class BizPoetryCommentController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:comment:export')")
     @Log(title = "诗词评论", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, BizPoetryComment bizPoetryComment)
-    {
+    public void export(HttpServletResponse response, BizPoetryComment bizPoetryComment) {
         List<BizPoetryComment> list = bizPoetryCommentService.selectBizPoetryCommentList(bizPoetryComment);
         ExcelUtil<BizPoetryComment> util = new ExcelUtil<BizPoetryComment>(BizPoetryComment.class);
         util.exportExcel(response, list, "诗词评论数据");
@@ -64,8 +57,7 @@ public class BizPoetryCommentController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:comment:query')")
     @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") Long id)
-    {
+    public AjaxResult getInfo(@PathVariable("id") Long id) {
         return success(bizPoetryCommentService.selectBizPoetryCommentById(id));
     }
 
@@ -75,8 +67,7 @@ public class BizPoetryCommentController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:comment:add')")
     @Log(title = "诗词评论", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody BizPoetryComment bizPoetryComment)
-    {
+    public AjaxResult add(@RequestBody BizPoetryComment bizPoetryComment) {
         return toAjax(bizPoetryCommentService.insertBizPoetryComment(bizPoetryComment));
     }
 
@@ -86,8 +77,7 @@ public class BizPoetryCommentController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:comment:edit')")
     @Log(title = "诗词评论", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody BizPoetryComment bizPoetryComment)
-    {
+    public AjaxResult edit(@RequestBody BizPoetryComment bizPoetryComment) {
         return toAjax(bizPoetryCommentService.updateBizPoetryComment(bizPoetryComment));
     }
 
@@ -96,9 +86,8 @@ public class BizPoetryCommentController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:comment:remove')")
     @Log(title = "诗词评论", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids)
-    {
+    @DeleteMapping("/{ids}")
+    public AjaxResult remove(@PathVariable Long[] ids) {
         return toAjax(bizPoetryCommentService.deleteBizPoetryCommentByIds(ids));
     }
 }

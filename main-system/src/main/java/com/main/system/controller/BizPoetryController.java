@@ -1,5 +1,6 @@
 package com.main.system.controller;
 
+import com.main.common.annotation.Anonymous;
 import com.main.common.annotation.Log;
 import com.main.common.core.controller.BaseController;
 import com.main.common.core.domain.AjaxResult;
@@ -30,7 +31,8 @@ public class BizPoetryController extends BaseController {
     /**
      * 查询诗词列表
      */
-//    @PreAuthorize("@ss.hasPermi('system:poetry:list')")
+    @PreAuthorize("@ss.hasPermi('system:poetry:list')")
+    @Anonymous
     @GetMapping("/list")
     public TableDataInfo list(BizPoetry bizPoetry) {
         startPage();

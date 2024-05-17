@@ -1,5 +1,6 @@
 package com.main.system.controller;
 
+import com.main.common.annotation.Anonymous;
 import com.main.common.annotation.Log;
 import com.main.common.core.controller.BaseController;
 import com.main.common.core.domain.AjaxResult;
@@ -30,7 +31,8 @@ public class BizPostsBrowseController extends BaseController {
     /**
      * 查询帖子浏览记录列表
      */
-//    @PreAuthorize("@ss.hasPermi('system:browse:list')")
+    @PreAuthorize("@ss.hasPermi('system:browse:list')")
+    @Anonymous
     @GetMapping("/list")
     public TableDataInfo list(BizPostsBrowse bizPostsBrowse) {
         startPage();
