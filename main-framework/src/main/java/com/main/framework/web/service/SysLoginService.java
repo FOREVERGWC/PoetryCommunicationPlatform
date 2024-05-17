@@ -102,7 +102,7 @@ public class SysLoginService {
         if (user == null) {
             user = new SysUser();
             String uuid = UUID.randomUUID().toString();
-            user.setUserName("");
+            user.setUserName(uuid);
             user.setNickName("微信用户" + uuid);
             user.setPassword(SecurityUtils.encryptPassword("123456"));
             user.setPhonenumber("");
