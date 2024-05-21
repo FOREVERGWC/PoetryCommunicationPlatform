@@ -1,0 +1,20 @@
+<cu-custom bgColor="bg-gradual-pink" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">发帖</view>
+</cu-custom>
+<t-input label="标题" placeholder="请输入标题"  bindchange="inputTitle"></t-input>
+<richText 
+  id='richText' 
+  placeholder='{{"请说些什么吧～"}}' 
+  formatDate='YY/MM/DD'
+  buttonTxt='发布'
+  bind:clearBeforeEvent='clearBeforeEvent'
+  bind:clearSuccess='clearSuccess'
+  bind:undo='undo'
+  bind:restore='restore'
+  bind:onEditorReady='onEditorReady' 
+  bind:bindfocus='bindfocus' 
+  bind:bindblur='bindblur' 
+  bind:bindinput='bindinput' 
+  bind:insertImageEvent='insertImageEvent' 
+  bind:getEditorContent='getEditorContent'></richText>

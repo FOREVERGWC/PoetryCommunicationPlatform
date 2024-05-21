@@ -1,0 +1,5 @@
+.container {
+  margin: 0 32rpx;
+}
+@import "colorui/main.wxss";
+@import "colorui/icon.wxss";

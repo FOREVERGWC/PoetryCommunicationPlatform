@@ -1,0 +1,5 @@
+/* pages/post-detail/index.wxss */
+.cu-list.menu-avatar.comment>.cu-item {
+  padding: 30rpx 30rpx 30rpx 30rpx;
+  height: auto;
+}

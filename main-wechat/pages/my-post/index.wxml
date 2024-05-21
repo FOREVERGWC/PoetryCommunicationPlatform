@@ -1,0 +1,26 @@
+<cu-custom bgColor="bg-gradual-pink" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">我的发帖</view>
+</cu-custom>
+<view bind:tap="navToPostDetail" data-id="{{item.id}}" wx:for="{{list}}" wx:key="id" class="cu-card article">
+  <view class="cu-item shadow">
+    <view class="title">
+      <view class="text-cut">{{item.title}}</view>
+    </view>
+    <view class="content">
+      <view class="desc">
+        <view class="text-content">
+          <rich-text nodes="{{item.content}}"></rich-text>
+        </view>
+      </view>
+    </view>
+    <view class="text-gray text-sm text-right padding  flex justify-between">
+      <view class="text-gray text-sm">
+        {{item.createTime}}
+      </view>
+      <view>
+        <text class="cuIcon-attentionfill margin-lr-xs"></text> {{item.click}}
+      </view>
+    </view>
+  </view>
+</view>
