@@ -2,7 +2,7 @@
   <view slot="backText">返回</view>
   <view slot="content">诗词</view>
 </cu-custom>
-<t-notice-bar visible="{{true}}" suffixIcon="close" content="{{notice.noticeTitle+notices.noticeContent}}" bind:click="click"></t-notice-bar>
+<t-notice-bar visible="{{ visible }}" suffixIcon="close" content="{{notice.noticeTitle+notice.noticeContent}}" bind:click="click"></t-notice-bar>
 <view class="example-search">
   <t-search model:value="{{searchText}}" placeholder="搜索内容" bind:change="onChange" />
 </view>

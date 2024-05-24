@@ -22,3 +22,7 @@ export function listMyPosts(query, userId) {
 export function addPost(data) {
   return post("/system/posts", data);
 }
+
+export const reply = (data) => {
+  return post('/system/reply', data)
+}

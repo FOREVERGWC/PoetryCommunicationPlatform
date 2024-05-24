@@ -3,6 +3,8 @@ import {
   listFavorite
 } from "../../engine/favorite"
 
+const app = getApp();
+
 // pages/my-collect/index.js
 Page({
 
@@ -31,7 +33,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   async getList() {
-    let res = await listFavorite({})
+    let res = await listFavorite({
+      userId: app.globalData.userInfo.userId
+    })
     res.rows.forEach(e => {
       e.bizPoetry.content = e.bizPoetry.content.slice(0, 15)
     })
@@ -51,6 +55,7 @@ Page({
     this.getList()
   },
   navToPoetryDetail(e) {
+    console.log(e)
     wx.navigateTo({
       url: `/pages/poetry-detail/index?id=${e.currentTarget.dataset.id}`,
     })

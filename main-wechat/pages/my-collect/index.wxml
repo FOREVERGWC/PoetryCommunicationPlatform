@@ -4,7 +4,7 @@
 </cu-custom>
 <view wx:key="id" wx:for="{{list}}">
   <t-swipe-cell>
-    <t-cell data-id="{{item.id}}" bind:tap="navToPoetryDetail" title="{{item.bizPoetry.author}}" note="{{item.bizPoetry.content}}" bordered="{{false}}" />
+    <t-cell data-id="{{item.poetryId}}" bind:tap="navToPoetryDetail" title="{{item.bizPoetry.author}}" note="{{item.bizPoetry.content}}" bordered="{{false}}" />
     <view slot="right" class="btn delete-btn" data-id="{{item.id}}" bind:tap="onDelete">删除</view>
   </t-swipe-cell>
 </view>

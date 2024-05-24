@@ -27,7 +27,8 @@
       </view>
     </view>
     <view class="text-gray text-sm text-right padding">
-      <text bind:tap="favorite" class="{{poetry.favorite?'cuIcon-favor margin-lr-xs':'cuIcon-favorfill margin-lr-xs'}}"></text>{{poetry.favorites}}
+      <text bind:tap="favorite" class="{{poetry.favorite?'cuIcon-favor margin-lr-xs':'cuIcon-favorfill margin-lr-xs'}}"></text>
+      {{poetry.favorites}}
       <text class="cuIcon-attentionfill margin-lr-xs"></text> {{poetry.click}}
       <text class="cuIcon-messagefill margin-lr-xs"></text> {{poetry.bizPoetryCommentList? poetry.bizPoetryCommentList.length:0}}
     </view>
