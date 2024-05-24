@@ -1,3 +1,11 @@
+<!-- <wxs module="utils">
+  module.exports = {
+    getUserNickNameOrUserNameById: function(replyList, id) {
+      const item = replyList.find(item => item.id === id)
+      return item ? item.user.nickName || item.user.userName : '未知用户'
+    }
+  }
+</wxs> -->
 <cu-custom bgColor="bg-gradual-pink" isBack="{{true}}">
   <view slot=" backText">返回</view>
   <view slot="content">帖子详情</view>
@@ -5,14 +13,20 @@
 <view style="padding:20rpx">
   <rich-text style="padding: 40rpx;" nodes="{{item}}"></rich-text>
 </view>
+<!-- <view wx:if="{{replyName}}" class="content bg-green shadow-blur">
+  <text>回复：</text>{{ replyName }}
+</view> -->
+<view wx:if="{{replyName}}" class="content bg-green shadow-blur">
+  <text>回复：</text>{{ replyName }}
+  <view class="close-icon" bindtap="clearReplyName">×</view>
+</view>
 <view class="cu-bar input">
   <input bindinput="bindInput" placeholder="请输入评论" value="{{commentValue}}" maxlength="300" cursor-spacing="10"></input>
   <button bind:tap="sendComment" class="cu-btn bg-green shadow-blur">发送</button>
 </view>
 <scroll-view>
-  <!-- <view class="cu-list menu-avatar comment solids-top" style="margin-top: 0rpx;"> -->
   <view class="cu-list menu comment solids-top" style="margin-top: 0rpx;">
-    <view wx:for="{{replyList}}" class="cu-item">
+    <view wx:for="{{replyList}}" wx:key="id" class="cu-item" bindtap="handleItemClick" data-item="{{item}}">
       <view class="content">
         <view class="text-grey">{{item.user.nickName}}</view>
         <view class="text-gray text-content text-df">
@@ -21,12 +35,16 @@
         <view class="margin-top-sm flex justify-between">
           <view class="text-gray text-df">{{item.createTime}}</view>
         </view>
-        <view wx:for="{{item.children}}" wx:key="id" class="bg-grey padding-sm radius margin-top-sm  text-sm">
-						<view class="flex">
-							<view>{{item.user.nickName}}：</view>
-							<view class="flex-sub">{{item.content}}</view>
-						</view>
-					</view>
+        <view wx:for="{{item.children}}" wx:key="id" wx:for-item="subItem" class="bg-grey padding-sm radius margin-top-sm  text-sm" catchtap="handleItemClick" data-item="{{subItem}}">
+          <view class="flex">
+            <view>
+            <span style="color: #66ccff">{{item.user.nickName}}</span>
+            <span wx:if="{{item.id !== subItem.replyId}}">
+            回复<span style="color: #66ccff">{{ subItem.replyName }}</span>
+            </span></view>：
+            <view class="flex-sub">{{subItem.content}}</view>
+          </view>
+        </view>
       </view>
     </view>
   </view>

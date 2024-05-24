@@ -1,1 +1,15 @@
 /* pages/post-detail/index.wxss */
+/* 样式文件，用于定义视图和叉号的样式 */
+.content {
+  position: relative;
+  padding: 10px;
+}
+
+.close-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  cursor: pointer;
+}
