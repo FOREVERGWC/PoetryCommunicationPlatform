@@ -6,13 +6,14 @@
         <view class="cu-tag badge {{0==userInfo.sex?'cuIcon-male bg-blue':'cuIcon-female bg-pink'}}"></view>
       </view>
     </view>
-    <button style="margin-top: 10rpx;" class="cu-btn round bg-blue" open-type="getUserInfo" bindgetuserinfo="login">{{userInfo.nickName?userInfo.nickName:'登录'}}</button>
+    <button style="margin-top: 10rpx;" class="cu-btn round bg-blue" bind:tap="navigateToLogin">{{userInfo.nickName?userInfo.nickName:'登录'}}</button>
   </view>
   <view>
     <t-cell title="姓名" description="{{userInfo.nickName||'-'}}" hover></t-cell>
     <t-cell bind:tap="bindPhone" title="联系电话" description="{{userInfo.phonenumber||'点击绑定手机号'}}" hover></t-cell>
     <t-cell bind:tap="navToMyCollect" title="收藏管理" arrow hover></t-cell>
     <t-cell bind:tap="navToMyPost" title="我的发帖" arrow hover></t-cell>
+    <t-cell bind:tap="logout" title="退出登陆" hover></t-cell>
   </view>
   <t-dialog visible="{{showWithInput}}" title="输入手机号" confirm-btn="确定" cancel-btn="取消" bind:confirm="onConfirm" bind:cancel="closeDialog">
     <t-input borderless placeholder="输入手机号码" value="{{phoneNumber}}" clearable type="number" slot="content" tips="{{phoneError ? '手机号输入不正确' : ''}}" bindchange="onPhoneInput"></t-input>

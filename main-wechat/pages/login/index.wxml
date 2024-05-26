@@ -2,3 +2,12 @@
   <view slot="backText">返回</view>
   <view slot="content">登录</view>
 </cu-custom>
+<view class="bg-gradual-blue" style="height:100vh; display: flex;flex-direction: column;">
+  <text style="align-self: center;font-size: 40rpx;margin-bottom: 100rpx;margin-top: 100rpx;">欢迎使用诗词交流平台</text>
+  <view style="padding-left:20rpx;padding-right:20rpx">
+    <t-input style="margin-bottom: 20rpx;" label="账号" placeholder="请输入账号" model:value="{{username}}"></t-input>
+    <t-input style="margin-bottom: 20rpx;" label="密码" placeholder="请输入密码" type="password" model:value="{{password}}" clearable/>
+  </view>
+  <button style="margin:20rpx;margin-bottom: 10rpx;" class="cu-btn bg-blue" bind:tap="loginByUsername">登陆</button>
+  <button style="margin:20rpx;" class="cu-btn bg-green" open-type="getUserInfo" bindgetuserinfo="login">使用微信登录</button>
+</view>

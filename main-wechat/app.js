@@ -9,8 +9,10 @@ App({
           this.globalData.Custom = custom;
           this.globalData.CustomBar = custom.bottom + custom.top - e.statusBarHeight;
         }
-      }),
-      this.globalData.userInfo = JSON.parse(wx.getStorageSync('userInfo'));
+      });
+     let userInfo = wx.getStorageSync('userInfo');
+     userInfo = userInfo? userInfo: '{}'
+      this.globalData.userInfo = JSON.parse(userInfo);
   },
   globalData: {
     userInfo: {

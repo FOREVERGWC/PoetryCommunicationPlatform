@@ -66,8 +66,8 @@ export const get = (url, data) => {
     ...data,
     pageNum: 1,
     pageSize: 1000,
-    // orderByColumn: 'create_time',
-    // isAsc: 'desc'
+    orderByColumn: 'create_time',
+    isAsc: 'desc'
   }
   return request(url, 'GET', data)
 };

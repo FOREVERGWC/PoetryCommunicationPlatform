@@ -11,6 +11,11 @@ export function login(data) {
 }
 
 // 登陆
+export function loginByUserName(data) {
+  return post('/login', data)
+}
+
+// 登陆
 export function getUserInfo() {
   return get('/getInfo')
 }

@@ -1,6 +1,4 @@
 import {
-  getUserInfo,
-  login,
   updateUserPhone
 } from "../../engine/me";
 import {
@@ -51,6 +49,9 @@ Page({
         }
       }
     })
+    this.setData({
+      userInfo: app.globalData.userInfo
+    })
   },
   navToMyCollect: function () {
     wx.navigateTo({
@@ -74,44 +75,45 @@ Page({
       showWithInput: false
     })
   },
-  onConfirm: function () {
+  onConfirm: async function () {
     this.setData({
       showWithInput: false
     })
-    updateUserPhone({
+    this.setData({
+      userInfo: {
+        ...this.data.userInfo,
+        phoneNumber: this.data.phoneNumber
+      }
+    })
+    app.globalData.userInfo = {
+      ...app.globalData.userInfo,
+      phoneNumber: this.data.phoneNumber
+    }
+    await updateUserPhone({
       userName: this.data.userInfo.nickName,
       userId: this.data.userInfo.userId,
       phonenumber: this.data.phoneNumber
     })
+
+
   },
   navToMyPost: function () {
     wx.navigateTo({
       url: '/pages/my-post/index',
     })
   },
-  login: async function (e) {
-    const wxUserInfo = e.detail.userInfo;
-    let {
-      code
-    } = await wx.login();
-    const {
-      token
-    } = await login({
-      js_code: code,
-      grant_type: "authorization_code"
-    });
-    app.globalData.userInfo.token = token
-    const userInfo = await getUserInfo();
-    userInfo.user.avatar = wxUserInfo.avatarUrl
-    userInfo.user.nickName = wxUserInfo.nickName
-    userInfo.user.sex = wxUserInfo.gender
-    app.globalData.userInfo = {
-      token,
-      ...userInfo.user
-    }
-    wx.setStorageSync('userInfo', JSON.stringify(app.globalData.userInfo))
+  logout() {
     this.setData({
-      userInfo: userInfo.user
+      userInfo:{},
     })
+    wx.setStorageSync('userInfo', JSON.stringify({}))
+    app.globalData.userInfo = {}
+  },
+  navigateToLogin(params) {
+    if (!this.data.userInfo.nickName) {
+      wx.navigateTo({
+        url: '/pages/login/index',
+      })
+    }
   }
 })

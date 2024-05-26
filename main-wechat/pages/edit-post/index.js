@@ -2,6 +2,7 @@ import {
   addPost
 } from "../../engine/post"
 
+let richText;
 // pages/edit-post/index.js
 Page({
 
@@ -56,10 +57,21 @@ Page({
       })
       return
     }
-    await addPost({
+   let { code } =  await addPost({
       title: this.data.title,
       content: this.data.value
     })
+    if(code != 200){
+      wx.showToast({
+        icon:'error',
+        title: '发帖失败',
+      })
+    }
+    else{ wx.showToast({
+      title: '发帖成功',
+    })
+      wx.navigateBack()
+    }
   },
 
   //编辑器初始化完成时触发，可以获取组件实例
